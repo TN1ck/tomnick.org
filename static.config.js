@@ -42,9 +42,9 @@ const typescriptWebpackPaths = require("./webpack.config.js");
 export default {
   entry: path.join(__dirname, "src", "index.tsx"),
   getSiteData: () => ({
-    title: "React Static",
+    title: "Tom Nick | Software Developer",
   }),
-  siteRoot: "https://tomnick.org",
+  // siteRoot: "https://tomnick.org",
   getRoutes: async () => {
     const postFolder = path.join(__dirname, "content/posts");
     const postsPaths = await new Promise((resolve) => {
