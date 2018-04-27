@@ -1,0 +1,611 @@
+// i inline the css via the includes, front-matter would break this
+// ---
+// # Only the main Sass file needs front matter (the dashes are enough)
+// ---
+@charset "utf-8";
+
+// Our variables
+$base-font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$base-font-size:   16px;
+$base-font-weight: 400;
+$small-font-size:  $base-font-size * 0.875;
+$font-size-h1:     36px;
+$base-line-height: 1.75;
+
+$color-frame-border: 8px;
+
+$spacing-unit:     30px;
+$background-color: #f5f5f5;
+$brand-color:      #2a7ae2;
+
+$grey-color:       #828282;
+$grey-color-light: lighten($grey-color, 40%);
+$grey-color-dark:  darken($grey-color, 25%);
+
+// Width of the content area
+$content-width:    800px;
+
+$on-palm:          600px;
+$on-laptop:        800px;
+
+// colors taken from https://yeun.github.io/open-color/swatches.html and
+// https://material.io/guidelines/style/color.html#color-color-palette
+$color-cyan8:      #0c8599;
+$color-teal5:      #20c997;
+$color-teal7:      #0ca678;
+$color-teal8:      #099268;
+$color-green6:     #40c057;
+$color-base:       #111111;
+$color-yellow: #ffdd59;
+$color-yellow-dark: #ffd32a;
+$color-yellow-very-dark: #ccae62;
+
+$color-brand-light: $color-yellow;
+$color-brand:      $color-yellow;
+$color-brand-dark: $color-yellow-very-dark;
+$text-color:       $color-base;
+
+$screen-xs: 480px;
+$screen-sm-min: 481px;
+
+$max-content-width: 630px;
+$min-content-width: 500px;
+
+
+// box-sizing for every element
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+// the super basics
+body {
+    position: relative;
+    background-color: $background-color;
+    color: $text-color;
+    font-size: $base-font-size;
+    font-family: $base-font-family;
+    line-height: $base-line-height;
+    padding: 0;
+    margin: 0;
+    padding-top: $color-frame-border;
+
+    // for the footer
+    min-height: 100%;
+    padding-bottom: 160px + $spacing-unit * 2;
+}
+
+main {
+    display: block; // IE-11
+    max-width: $max-content-width;
+    margin-top: $spacing-unit;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer {
+    display: block;
+    color: white;
+    background-color: $grey-color-dark;
+    padding: $spacing-unit $spacing-unit;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    a {
+        color: white;
+    }
+}
+
+nav {
+  a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    margin-right: $spacing-unit;
+    position: relative;
+    display: inline-block;
+
+    &:hover, &.active {
+      &:before {
+        z-index: -1;
+        transition: all 0.1s ease-in-out;
+        position: absolute;
+        display: block;
+        content: '';
+        height: 4px;
+        top: 1.6em;
+        background: black;
+        width: 100%;
+      }
+    }
+  }
+}
+
+//
+// UTILITY CLASSES
+//
+
+.hidden {
+    display: none;
+}
+
+.clearfix {
+    content: "";
+    clear: both;
+    display: block;
+    height: 0px;
+}
+
+.brand-color-block {
+    color: white;
+    background-color: $color-brand;
+    padding: 5px 15px;
+    display: inline-block;
+}
+
+$shadow-padding-horizontal: 7px;
+$shadow-padding-vertical: 3px;
+.brand-color-shadow {
+    color: black;
+    background-color: $grey-color-light;
+    -webkit-box-decoration-break: clone;
+    -ms-box-decoration-break: clone;
+    -o-box-decoration-break: clone;
+    box-decoration-break: clone;
+    box-shadow:  $shadow-padding-horizontal  0   0 $grey-color-light,
+                -$shadow-padding-horizontal  0   0 $grey-color-light,
+                -$shadow-padding-horizontal  $shadow-padding-vertical 0 $grey-color-light,
+                 $shadow-padding-horizontal  $shadow-padding-vertical 0 $grey-color-light,
+                 // stop scss to evaluate this
+                -$shadow-padding-horizontal -#{$shadow-padding-vertical} 0 $grey-color-light,
+                 $shadow-padding-horizontal -#{$shadow-padding-vertical} 0 $grey-color-light;
+}
+
+//
+// PAGE HEADER
+//
+
+.page-header-container {
+    margin-top: $spacing-unit;
+    text-align: center;
+    .page-header {
+
+        color: $color-base;
+        padding: 20px;
+
+        display: inline-block;
+        font-size: 24px;
+        a {
+            color: $color-base;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+//
+// NAV
+//
+
+.nav {
+    margin-top: $spacing-unit / 2;
+    margin-bottom: $spacing-unit / 2;
+    &-url {
+        margin-left: $spacing-unit / 1.5;
+        color: $grey-color-dark;
+        text-decoration: none;
+    }
+}
+
+//
+// POST LIST
+//
+
+.other-posts {
+    margin-top: $spacing-unit * 2;
+}
+
+.post-list {
+    margin: 0;
+    padding: 0;
+    > li {
+        list-style-type: none;
+        margin: $spacing-unit / 4 0;
+        a {
+            color: black;
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+            z-index: 3;
+
+            &:visited {
+                color: black;
+            }
+
+            &:hover {
+                &:before {
+                    height: 30px;
+                    top: 0px;
+                }
+            }
+
+            &:before {
+                z-index: -1;
+                transition: all 0.1s ease-in-out;
+                position: absolute;
+                display: block;
+                content: '';
+                height: 4px;
+                top: 1.6em;
+                background: $grey-color-light;
+                width: 100%;
+            }
+        }
+    }
+}
+
+.link {
+  // background: $color-brand-light;
+  // padding: 3px 5px;
+  color: black;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  z-index: 3;
+
+  &:visited {
+      color: black;
+  }
+
+  &:hover {
+      &:before {
+          height: 30px;
+          top: 0px;
+      }
+  }
+
+  &:before {
+      z-index: -1;
+      transition: all 0.1s ease-in-out;
+      position: absolute;
+      display: block;
+      content: '';
+      height: 4px;
+      top: 1.6em;
+      background: $color-brand;
+      width: 100%;
+  }
+}
+
+//
+// POST
+//
+
+.post {
+
+    margin-top: $spacing-unit;
+    border-radius: 4px;
+    box-shadow: 0 5px 20px rgba(25, 17, 34, 0.1);
+
+    &:after {
+        @extend .clearfix;
+    }
+
+    //
+    // Tag styles
+    //
+
+    h1 {
+        margin: 0;
+    }
+    h2 {
+        margin: 0;
+    }
+
+    ul {
+        > li {
+
+        }
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    p a {
+      @extend .link;
+    }
+
+
+
+    blockquote {
+        margin: 0;
+        padding-left: 20px;
+        border-left: 0.25em solid $color-brand;
+    }
+
+    &-title {
+        font-size: $font-size-h1;
+        font-weight: bold;
+    }
+
+    &-date {
+        display: block;
+        margin-bottom: $spacing-unit / 2;
+    }
+
+    &-url.post-url {
+        color: $text-color;
+        text-decoration: none;
+        &:visited {
+            color: $text-color;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &-separator {
+        margin-top: $spacing-unit * 2;
+        margin-bottom: $spacing-unit * 2;
+
+        &:last-of-type {
+            border-color: transparent;
+        }
+    }
+
+    &-author-container {
+        padding-left: $shadow-padding-horizontal;
+        float: none;
+        clear: both;
+        margin-top: $spacing-unit;
+    }
+
+    &-author {
+        @extend .brand-color-shadow;
+        &:before {
+            content: "---";
+            letter-spacing: -2px;
+        }
+    }
+
+    &-content {
+        // figure {
+        //     overflow-x: scroll;
+        // }
+    }
+
+    &-excerpt {
+        font-size: 18px;
+        line-height: 35px;
+        padding-left: $shadow-padding-horizontal;
+        &-inner {
+            @extend .brand-color-shadow;
+        }
+    }
+
+    &-image-container {
+        width: 100%;
+        display: inline-block;
+        &--zoomed {
+            .post-image-text {
+                width: 100%;
+            }
+            .post-image-image {
+                width: 100%;
+                &:hover {
+                    cursor: zoom-out;
+                }
+            }
+        }
+    }
+
+    &-image-image {
+        float: left;
+        width: 50%;
+        &:hover {
+            cursor: zoom-in;
+        }
+        img {
+            width: 100%;
+        }
+    }
+
+    &-image-text {
+        font-size: $small-font-size;
+        float: left;
+        width: 50%;
+        padding-left: 20px;
+    }
+}
+
+//
+// HOME / INDEX
+//
+
+.home {
+    > ul {
+        margin: 0;
+        padding: 0;
+        > li {
+            list-style-type: none;
+        }
+    }
+
+}
+
+
+//
+// Responsive styles
+//
+
+@media (max-width: $screen-xs) {
+    .page-header-container {
+        margin-top: 0;
+    }
+    .post {
+
+        box-shadow: none;
+
+        &-image-image {
+            width: 100%;
+        }
+
+        &-image-text {
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width: $screen-sm-min) {
+    .post {
+        background: white;
+        padding: 20px;
+    }
+}
+
+// if the content is smaller than min-content-width, put the sidebar to the top
+@media (max-width: ($min-content-width + $spacing-unit * 6)) {
+    main {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: $spacing-unit;
+        padding-right: $spacing-unit;
+    }
+}
+
+// .color-frame {
+//     position: fixed;
+//     width: 100%;
+//     height: 100vh;
+//     pointer-events: none;
+//     z-index: 99;
+//     border: $color-frame-border solid $grey-color;
+//     border-image: linear-gradient(135deg, #{$grey-color}, #{$grey-color}) 1;
+//     top: 0;
+// }
+
+/* css highlight */
+.highlighter-rouge {
+    background: lighten($grey-color, 45%);
+    padding: 2px 5px;
+    color: black;
+}
+
+.highlight  {
+
+    overflow-x: auto;
+    background: #272822;
+}
+
+/*
+Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  background: #F0F0F0;
+  font-size: 13px;
+  // margin-left: -20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+}
+
+
+/* Base color: saturation 0; */
+
+.hljs,
+.hljs-subst {
+  color: #444;
+}
+
+.hljs-comment {
+  color: #888888;
+}
+
+.hljs-keyword,
+.hljs-attribute,
+.hljs-selector-tag,
+.hljs-meta-keyword,
+.hljs-doctag,
+.hljs-name {
+  font-weight: bold;
+}
+
+
+/* User color: hue: 0 */
+
+.hljs-type,
+.hljs-string,
+.hljs-number,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag,
+.hljs-deletion {
+  color: #880000;
+}
+
+.hljs-title,
+.hljs-section {
+  color: #880000;
+  font-weight: bold;
+}
+
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #BC6060;
+}
+
+
+/* Language color: hue: 90; */
+
+.hljs-literal {
+  color: #78A960;
+}
+
+.hljs-built_in,
+.hljs-bullet,
+.hljs-code,
+.hljs-addition {
+  color: #397300;
+}
+
+
+/* Meta color: hue: 200 */
+
+.hljs-meta {
+  color: #1f7199;
+}
+
+.hljs-meta-string {
+  color: #4d99bf;
+}
+
+
+/* Misc effects */
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
