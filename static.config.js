@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs";
 import fm from "front-matter";
 import showdown from "showdown";
-import slug from "slug";
+import slugify from "slugify";
 import highlightjs from "highlightjs";
 import ExtractTextPlugin from "extract-text-webpack-plugin";
 
@@ -58,7 +58,9 @@ export default {
           fs.readFile(path.join(postFolder, p), "utf8", (err, text) => {
             const frontmattered = fm(text);
             const markdown = converter.makeHtml(frontmattered.body);
-            frontmattered.id = slug(frontmattered.attributes.title);
+            frontmattered.id = slugify(frontmattered.attributes.title, {
+              lower: true,
+            });
             frontmattered.body = markdown;
             resolve(frontmattered);
           });
