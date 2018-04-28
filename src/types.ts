@@ -3,7 +3,7 @@ export interface Post {
   id: number;
   attributes: {
     title: string;
-    date: Date;
+    date: string;
     categories: string[];
     author: string;
     excerpt: string;

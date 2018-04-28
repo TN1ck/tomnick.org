@@ -13,8 +13,8 @@ export default withRouteData(({ posts }: Props) => (
     <ul className="post-list">
       {posts.map(post => (
         <li key={post.id}>
-          <Link to={`/blog/post/${post.id}/`}>
-            {post.attributes.title}
+          <Link to={`/blog/${post.id}/`}>
+            <strong>{post.attributes.title}</strong>
             {" - "}
             <time
               itemProp="datePublished"

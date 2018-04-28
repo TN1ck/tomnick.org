@@ -59,7 +59,6 @@ export default {
             const frontmattered = fm(text);
             const markdown = converter.makeHtml(frontmattered.body);
             frontmattered.id = slug(frontmattered.attributes.title);
-            frontmattered.attributes.date = new Date(frontmattered.attributes.date);
             frontmattered.body = markdown;
             resolve(frontmattered);
           });
@@ -68,7 +67,7 @@ export default {
     );
 
     const sortedPosts = posts.sort((a, b) => {
-      return b.attributes.date - a.attributes.date;
+      return new Date(b.attributes.date) - new Date(a.attributes.date);
     });
     return [
       {
@@ -83,10 +82,10 @@ export default {
         path: "/blog",
         component: "src/containers/Blog",
         getData: () => ({
-          posts,
+          posts: sortedPosts,
         }),
         children: sortedPosts.map((post) => ({
-          path: `/post/${post.id}`,
+          path: `/${post.id}`,
           component: "src/containers/Post",
           getData: () => ({
             post,
