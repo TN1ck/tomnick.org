@@ -212,9 +212,11 @@ export default {
         ],
       },
     ];
+
+    // small react-static bug, make sure to use their extract text plugin config
     config.plugins.push(
       new ExtractTextPlugin({
-        filename: "[name].[hash].css",
+        filename: "styles.[hash:8].css",
         disable: stage === "dev",
       }),
     );
