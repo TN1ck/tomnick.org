@@ -105,8 +105,6 @@ export default {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
-
         <meta name="description" content="Tom Nick. Developer by heart. Trying to build great products." />
 
         <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-180x180.png" />
@@ -116,10 +114,36 @@ export default {
         <link rel="manifest" href="/manifest.json" />
         <meta name="msapplication-TileColor" content="#9B9B9B" />
         <meta name="msapplication-TileImage" content="/images/mstile-150x150.png" />
-        <meta name="theme-color" content="#9B9B9B"/>
+        <meta name="theme-color" content="#9B9B9B" />
 
       </Head>
       <Body>{children}</Body>
+      <script
+        dangerouslySetInnerHTML={{
+          // make images zoomable
+          __html: `
+          document.querySelectorAll('.post-image-container').forEach(function (img) {
+            img.addEventListener('click', function () {
+                this.classList.toggle('post-image-container--zoomed');
+            });
+          });
+
+          // load fonts async
+          var WebFontConfig = {
+            google: {
+                families: [ 'Roboto:400,600,400italic' ]
+            },
+            timeout: 3000
+          };
+
+          (function(d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = '//ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+            wf.async = 'true';
+            s.parentNode.insertBefore(wf, s);
+          })(document);
+        ` }}
+      />
       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-58665819-4" />
       <script
         dangerouslySetInnerHTML={{
@@ -129,7 +153,7 @@ export default {
           gtag('js', new Date());
 
           gtag('config', 'UA-58665819-4');
-        `}}
+        ` }}
       />
     </Html>
   ),
@@ -147,6 +171,29 @@ export default {
       {
         oneOf: [
           {
+            test: /\.s(a|c)ss$/,
+            use:
+              stage === "dev"
+                ? [{ loader: "style-loader" }, { loader: "css-loader" }, { loader: "sass-loader" }]
+                : ExtractTextPlugin.extract({
+                  use: [
+                    {
+                      loader: "css-loader",
+                      options: {
+                        importLoaders: 1,
+                        minimize: true,
+                        sourceMap: false,
+                      },
+                    },
+                    {
+                      loader: "sass-loader",
+                      options: { includePaths: ["src/"] },
+                    },
+                  ],
+                }),
+          },
+          defaultLoaders.cssLoader,
+          {
             test: /\.(js|jsx|ts|tsx)$/,
             exclude: defaultLoaders.jsLoader.exclude, // as std jsLoader exclude
             use: [
@@ -161,30 +208,14 @@ export default {
               },
             ],
           },
-          // defaultLoaders.cssLoader,
           defaultLoaders.fileLoader,
         ],
-      },
-      {
-        test: /\.scss/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [
-            {
-              loader: "css-loader",
-              options: {
-                minimize: true,
-                importLoaders: 1,
-              },
-            },
-            "sass-loader",
-          ],
-        }),
       },
     ];
     config.plugins.push(
       new ExtractTextPlugin({
-        filename: "index.css",
+        filename: "[name].[hash].css",
+        disable: stage === "dev",
       }),
     );
     return config;
