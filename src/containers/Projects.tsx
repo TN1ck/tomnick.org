@@ -16,7 +16,7 @@ export default withRouteData(({ projects }: Props) => (
         <div>
           {showYear ? <h2>{project.attributes.year}</h2> : null}
           <div className="post">
-            <video loop muted poster={project.attributes.preview} autoPlay>
+            <video loop muted poster={project.attributes.preview} controls>
               <source type="video/mp4" src={project.attributes.video} />
             </video>
             <h3>{project.attributes.title}</h3>
