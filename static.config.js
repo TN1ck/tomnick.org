@@ -52,6 +52,8 @@ export default {
         resolve(files);
       });
     });
+
+
     const posts = await Promise.all(
       postsPaths.map((p) => {
         return new Promise((resolve) => {
@@ -71,6 +73,34 @@ export default {
     const sortedPosts = posts.sort((a, b) => {
       return new Date(b.attributes.date) - new Date(a.attributes.date);
     });
+
+    const projectsFolder = path.join(__dirname, "content/projects");
+    const projectsPaths = await new Promise((resolve) => {
+      fs.readdir(projectsFolder, (err, files) => {
+        resolve(files);
+      });
+    });
+
+    const projects = await Promise.all(
+      projectsPaths.map((p) => {
+        return new Promise((resolve) => {
+          fs.readFile(path.join(projectsFolder, p), "utf8", (err, text) => {
+            const frontmattered = fm(text);
+            const markdown = converter.makeHtml(frontmattered.body);
+            // frontmattered.id = slugify(frontmattered.attributes.title, {
+            //   lower: true,
+            // });
+            frontmattered.body = markdown;
+            resolve(frontmattered);
+          });
+        });
+      }),
+    );
+
+    const sortedProjects = projects.sort((a, b) => {
+      return parseInt(b.attributes.year) - parseInt(a.attributes.year);
+    });
+
     return [
       {
         path: "/",
@@ -79,6 +109,9 @@ export default {
       {
         path: "/projects",
         component: "src/containers/Projects",
+        getData: () => ({
+          projects: sortedProjects,
+        }),
       },
       {
         path: "/blog",
