@@ -63,6 +63,7 @@ export default {
             frontmattered.id = slugify(frontmattered.attributes.title, {
               lower: true,
             });
+            frontmattered.attributes.date = new Date(frontmattered.attributes.date).toISOString();
             frontmattered.body = markdown;
             resolve(frontmattered);
           });

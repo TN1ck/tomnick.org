@@ -13,7 +13,7 @@ export default withRouteData(({ projects }: Props) => (
       const projectBefore = projects[i - 1];
       const showYear = !projectBefore || projectBefore.attributes.year !== project.attributes.year;
       return (
-        <div>
+        <div key={i}>
           {showYear ? <h2>{project.attributes.year}</h2> : null}
           <div className="post">
             <video loop muted poster={project.attributes.preview} controls>
