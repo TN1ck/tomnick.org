@@ -325,7 +325,7 @@ $shadow-padding-vertical: 3px;
         max-width: 100%;
     }
 
-    p a {
+    p a, ol a, ul a {
       @extend .link;
     }
 

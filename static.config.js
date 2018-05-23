@@ -1,11 +1,16 @@
 import React from "react";
+import { reloadRoutes } from "react-static/node";
 import path from "path";
 import fs from "fs";
 import fm from "front-matter";
 import showdown from "showdown";
+import chokidar from "chokidar";
 import slugify from "slugify";
 import highlightjs from "highlightjs";
 import ExtractTextPlugin from "extract-text-webpack-plugin";
+
+chokidar.watch("./content").on("all", () => reloadRoutes());
+
 
 showdown.extension("codehighlight", () => {
   function htmlunencode (text) {
@@ -17,7 +22,7 @@ showdown.extension("codehighlight", () => {
   return [
     {
       type: "output",
-      filter: (text, converter, options) => {
+      filter: (text) => {
         // use new shodown's regexp engine to conditionally parse codeblocks
         const left = "<pre><code\\b[^>]*>";
         const right = "</code></pre>";
@@ -53,6 +58,12 @@ export default {
       });
     });
 
+    const about = await new Promise((resolve) => {
+      fs.readFile(path.join(__dirname, "content/about/about.md"), "utf8", (err, text) => {
+        const markdown = converter.makeHtml(text);
+        resolve(markdown);
+      });
+    });
 
     const posts = await Promise.all(
       postsPaths.map((p) => {
@@ -106,6 +117,9 @@ export default {
       {
         path: "/",
         component: "src/containers/Home",
+        getData: () => ({
+          about,
+        }),
       },
       {
         path: "/projects",
@@ -113,6 +127,10 @@ export default {
         getData: () => ({
           projects: sortedProjects,
         }),
+      },
+      {
+        path: "/admin",
+        component: "src/containers/Admin.tsx",
       },
       {
         path: "/blog",
@@ -134,7 +152,7 @@ export default {
       },
     ];
   },
-  Document: ({ Html, Head, Body, children, siteData, renderMeta }) => (
+  Document: ({ Html, Head, Body, children }) => (
     <Html lang="en-US">
       <Head>
         <meta charSet="UTF-8" />
@@ -165,7 +183,7 @@ export default {
           // load fonts async
           var WebFontConfig = {
             google: {
-                families: [ 'Roboto:400,600,400italic' ]
+                families: [ 'Roboto:400,700,400italic' ]
             },
             timeout: 3000
           };
