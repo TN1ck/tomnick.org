@@ -2,10 +2,12 @@ import React from "react";
 import { withRouteData } from "react-static";
 
 const About: React.StatelessComponent<{
-  about: string
+  about: {
+    body: string;
+  }
 }> = ({about}) => {
   return (
-    <div dangerouslySetInnerHTML={{__html: about}}/>
+    <div dangerouslySetInnerHTML={{__html: about.body}}/>
   );
 }
 

@@ -1,3 +1,6 @@
+---
+id: about
+---
 # Hi, I'm Tom.
 
 I'm a developer by heart and love to create products.

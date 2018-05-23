@@ -1,7 +1,7 @@
 backend:
   name: github
   repo: Tn1ck/tomnick.org
-  branch: master # Branch to update (optional; defaults to master)
+  branch: netlify-test # Branch to update (optional; defaults to master)
 
 media_folder: "public/uploads" # Media files will be stored in the repo under public/uploads
 public_folder: "/uploads" # Folder path where uploaded files will be accessed, relative to the base of the built site

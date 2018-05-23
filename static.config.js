@@ -60,8 +60,9 @@ export default {
 
     const about = await new Promise((resolve) => {
       fs.readFile(path.join(__dirname, "content/about/about.md"), "utf8", (err, text) => {
-        const markdown = converter.makeHtml(text);
-        resolve(markdown);
+        const frontmattered = fm(text);
+        frontmattered.body = converter.makeHtml(frontmattered.body);
+        resolve(frontmattered);
       });
     });
 
