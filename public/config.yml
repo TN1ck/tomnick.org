@@ -7,11 +7,11 @@ media_folder: "public/uploads" # Media files will be stored in the repo under pu
 public_folder: "/uploads" # Folder path where uploaded files will be accessed, relative to the base of the built site
 
 collections:
-  - name: "Single Pages" # Used in routes, e.g., /admin/collections/blog
-    label: "single_pages" # Used in the UI
+  - name: "single_pages" # Used in routes, e.g., /admin/collections/blog
+    label: "Single Pages" # Used in the UI
     files:
-      - label: "about"
-        name: "About"
+      - label: "About"
+        name: "about"
         file: 'content/about/about.md'
         fields:
           - {label: "Body", name: "body", widget: "markdown"}

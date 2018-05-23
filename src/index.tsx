@@ -1,8 +1,11 @@
 import React from "react";
+
 import ReactDOM from "react-dom";
 
 // Your top level component
 import App from "./App";
+
+import "./app.scss";
 
 // Export your top level component as JSX (for static rendering)
 export default App;

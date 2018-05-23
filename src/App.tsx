@@ -1,27 +1,22 @@
 import React from "react";
-import { Router, Link } from "react-static";
+import { Router, Route, Link, Switch } from "react-static";
 import { hot } from "react-hot-loader";
 //
 
-import Footer from './components/Footer';
+import Admin from './containers/Admin';
+import AppContainer from './components/AppContainer';
 import Routes from "react-static-routes";
 
-import "./app.scss";
 
 const App = () => (
   <Router>
     <div>
-      <main>
-        <nav>
-          <Link exact to="/">About</Link>
-          <Link to="/projects">Projects</Link>
-          <Link to="/blog">Blog</Link>
-        </nav>
-        <div className="content">
+      <Switch>
+        <Route path="/admin" component={Admin} />
+        <AppContainer>
           <Routes />
-        </div>
-      </main>
-      <Footer />
+        </AppContainer>
+      </Switch>
     </div>
   </Router>
 );
