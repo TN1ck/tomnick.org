@@ -39,6 +39,15 @@ const converter = new showdown.Converter({ extensions: ["codehighlight"] });
 // Paths Aliases defined through tsconfig.json
 const typescriptWebpackPaths = require("./webpack.config.js");
 
+function getPrivacyHtml () {
+  return new Promise((resolve) => {
+    fs.readFile(path.join(__dirname, "content/privacy.md"), "utf8", (err, text) => {
+      const html = converter.makeHtml(text);
+      resolve(html);
+    });
+  });
+}
+
 export default {
   entry: path.join(__dirname, "src", "index.tsx"),
   getSiteData: () => ({
@@ -102,6 +111,8 @@ export default {
       return parseInt(b.attributes.year) - parseInt(a.attributes.year);
     });
 
+    const privacyHtml = await getPrivacyHtml();
+
     return [
       {
         path: "/",
@@ -127,6 +138,13 @@ export default {
             post,
           }),
         })),
+      },
+      {
+        path: "/privacy",
+        component: "src/containers/Privacy",
+        getData: () => ({
+          privacyHtml,
+        }),
       },
       {
         is404: true,
