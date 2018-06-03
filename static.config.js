@@ -17,7 +17,7 @@ showdown.extension("codehighlight", () => {
   return [
     {
       type: "output",
-      filter: (text, converter, options) => {
+      filter: (text) => {
         // use new shodown's regexp engine to conditionally parse codeblocks
         const left = "<pre><code\\b[^>]*>";
         const right = "</code></pre>";
@@ -152,7 +152,7 @@ export default {
       },
     ];
   },
-  Document: ({ Html, Head, Body, children, siteData, renderMeta }) => (
+  Document: ({ Html, Head, Body, children }) => (
     <Html lang="en-US">
       <Head>
         <meta charSet="UTF-8" />
