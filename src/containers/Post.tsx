@@ -14,20 +14,20 @@ export default withRouteData(({ post }: Props) => (
     <article className="post">
 
       <a href="" className="post-url">
-          <header className="post-header">
-              <h1 className="post-title">{post.attributes.title}</h1>
-              <time itemProp="datePublished" className="post-date">
-                {dateFormatter(post.attributes.date)}
-              </time>
-          </header>
+        <header className="post-header">
+          <h1 className="post-title">{post.attributes.title}</h1>
+          <time itemProp="datePublished" className="post-date">
+            {dateFormatter(post.attributes.date)}
+          </time>
+        </header>
       </a>
 
       <div className="post-excerpt">
-          <span className="post-excerpt-inner"
-            dangerouslySetInnerHTML={{
-              __html: post.attributes.excerpt,
-            }}
-          />
+        <span className="post-excerpt-inner"
+          dangerouslySetInnerHTML={{
+            __html: post.attributes.excerpt,
+          }}
+        />
       </div>
 
       <div className="post-content"
@@ -37,9 +37,9 @@ export default withRouteData(({ post }: Props) => (
       />
 
       <div className="post-author-container">
-          <span className="post-author" itemProp="author">
-              {post.attributes.author}
-          </span>
+        <span className="post-author" itemProp="author">
+            {post.attributes.author}
+        </span>
       </div>
 
     </article>
