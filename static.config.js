@@ -2,39 +2,9 @@ import React from "react";
 import path from "path";
 import fs from "fs";
 import fm from "front-matter";
-import showdown from "showdown";
 import slugify from "slugify";
-import highlightjs from "highlightjs";
 import ExtractTextPlugin from "extract-text-webpack-plugin";
-
-showdown.extension("codehighlight", () => {
-  function htmlunencode (text) {
-    return text
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">");
-  }
-  return [
-    {
-      type: "output",
-      filter: (text) => {
-        // use new shodown's regexp engine to conditionally parse codeblocks
-        const left = "<pre><code\\b[^>]*>";
-        const right = "</code></pre>";
-        const flags = "g";
-        const replacement = (wholeMatch, match, left, right) => {
-          // unescape match to prevent double escaping
-          match = htmlunencode(match);
-          const leftNew = left.replace("<pre>", "<pre class='hljs'>");
-          return leftNew + highlightjs.highlightAuto(match).value + right;
-        };
-        return showdown.helper.replaceRecursiveRegExp(text, replacement, left, right, flags);
-      },
-    },
-  ];
-});
-
-const converter = new showdown.Converter({ extensions: ["codehighlight"] });
+import converter from './src/util/converter';
 
 // Paths Aliases defined through tsconfig.json
 const typescriptWebpackPaths = require("./webpack.config.js");
@@ -113,6 +83,19 @@ export default {
 
     const privacyHtml = await getPrivacyHtml();
 
+    const blogChildren = sortedPosts.map((post) => ({
+      path: `/${post.id}`,
+      component: "src/containers/Post",
+      getData: () => ({
+        post,
+      }),
+    })).concat([
+      {
+        path: '/dataviz-with-react',
+        component: 'src/custom-pages/DataVizWithReact',
+      }
+    ]);
+
     return [
       {
         path: "/",
@@ -131,13 +114,7 @@ export default {
         getData: () => ({
           posts: sortedPosts,
         }),
-        children: sortedPosts.map((post) => ({
-          path: `/${post.id}`,
-          component: "src/containers/Post",
-          getData: () => ({
-            post,
-          }),
-        })),
+        children: blogChildren,
       },
       {
         path: "/privacy",
@@ -211,7 +188,7 @@ export default {
   ),
   webpack: (config, { defaultLoaders, stage }) => {
     // Add .ts and .tsx extension to resolver
-    config.resolve.extensions.push(".ts", ".tsx");
+    config.resolve.extensions.push(".ts", ".tsx", ".js");
 
     // Add TypeScript Path Mappings (from tsconfig via webpack.config.js)
     // to react-statics alias resolution

@@ -6,9 +6,10 @@ import { Post } from "../types";
 
 interface Props {
   post: Post;
+  children?: React.Component;
 }
 
-export default withRouteData(({ post }: Props) => (
+export default withRouteData(({ post, children }: Props) => (
   <div>
 
     <article className="post">
@@ -30,11 +31,18 @@ export default withRouteData(({ post }: Props) => (
         />
       </div>
 
-      <div className="post-content"
-        dangerouslySetInnerHTML={{
-          __html: post.body,
-        }}
-      />
+      {children ? (
+          <div className="post-content">
+            {children}
+          </div>
+        ) : (
+          <div className="post-content"
+            dangerouslySetInnerHTML={{
+              __html: post.body,
+            }}
+          />
+        )
+      }
 
       <div className="post-author-container">
         <span className="post-author" itemProp="author">
