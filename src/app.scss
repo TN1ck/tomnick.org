@@ -616,3 +616,24 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 .hljs-strong {
   font-weight: bold;
 }
+
+
+// TODO: move
+
+.fade-enter {
+  opacity: 0;
+  transition: opacity 1000ms ease-out;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+}
+
+.fade-exit {
+  opacity: 0;
+  transition: opacity 1000ms ease-out;
+}
+
+.fade-exit.fade-exit-active {
+  opacity: 0;
+}
