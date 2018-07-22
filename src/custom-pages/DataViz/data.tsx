@@ -6,7 +6,7 @@ export interface Movie {
 }
 
 export function createMockData(numberOfPoints: number = 50): Movie[] {
-  return Array(numberOfPoints + Math.ceil(Math.random() * numberOfPoints / 10)).fill(1).map((_, i: number) => {
+  return Array(numberOfPoints + Math.ceil(Math.random() * numberOfPoints / 4)).fill(1).map((_, i: number) => {
     const imdb = Math.round(Math.random() * 100) / 10;
     return {
       imdb,
