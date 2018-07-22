@@ -16,6 +16,8 @@
     "d3-selection": "^1.3.0",
     "d3-transition": "^1.1.1",
     "global": "^4.3.2",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.2.3",
     "prettier": "^1.12.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

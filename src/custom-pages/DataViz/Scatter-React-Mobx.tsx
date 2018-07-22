@@ -1,57 +1,58 @@
 import * as React from 'react';
+import {observable, action} from 'mobx';
 import * as d3Scale from 'd3-scale';
+import {observer, Provider, inject} from 'mobx-react';
 import { Movie, createMockData } from './data';
 
-class ScatterReactMobx extends React.Component<{}, {
-  data: Movie[];
-  numberOfPoints: number;
-  active: Movie;
-}> {
-  constructor(props: any) {
-    super(props);
+class MovieState {
+  @observable.shallow movies: Movie[];
+  @observable numberOfPoints: number;
+  @observable active: Movie;
+
+  constructor() {
+    this.numberOfPoints = 100;
+    this.active = null;
+    this.movies = createMockData(this.numberOfPoints);
     this.updateData = this.updateData.bind(this);
+    this.setActive = this.setActive.bind(this);
     this.setNumberOfPoints = this.setNumberOfPoints.bind(this);
-    const numberOfPoints = 100;
-    this.state = {
-      data: createMockData(numberOfPoints),
-      active: null,
-      numberOfPoints,
-    }
   }
 
+  @action
   setNumberOfPoints(e: any) {
     const numberOfPoints = parseInt(e.target.value);
-    const data = createMockData(numberOfPoints);
-    this.setState({
-      data,
-      numberOfPoints,
-    });
+    const movies = createMockData(numberOfPoints);
+    this.numberOfPoints = numberOfPoints;
+    this.movies = movies;
   }
 
+  @action
   updateData() {
-    const newData = createMockData(this.state.numberOfPoints)
-    this.setState({
-      data: newData,
-    });
+    this.movies = createMockData(this.numberOfPoints);
   }
 
-  onMouseEnter(movie: Movie) {
-    this.setState({
-      active: movie,
-    });
+  @action
+  setActive(movie: Movie) {
+    this.active = movie;
   }
+}
 
-  onMouseLeave() {
-    this.setState({
-      active: null,
-    });
-  }
+const movieStore = new MovieState();
 
+@inject('movieStore')
+@observer
+class ScatterReactMobx extends React.Component<{
+  movieStore?: MovieState;
+}> {
   render() {
 
+    const movieStore = this.props.movieStore;
+
+    const data = movieStore.movies;
     const width = 400;
     const height = 400;
     const transitionTime = 1000;
+
     const scaleRange = Math.min(height, width);
     const margins = {
       left: 10,
@@ -63,7 +64,7 @@ class ScatterReactMobx extends React.Component<{}, {
       scaleRange - (margins.left + margins.right)
     ];
 
-    const rottenRatings = this.state.data.map(d => d.rotten);
+    const rottenRatings = data.map(d => d.rotten);
     const rottenMin = Math.min(...rottenRatings);
     const rottenMax = Math.max(...rottenRatings);
 
@@ -71,7 +72,7 @@ class ScatterReactMobx extends React.Component<{}, {
       .domain([rottenMin, rottenMax])
       .range([...range].reverse());
 
-    const imdbRatings = this.state.data.map(d => d.imdb);
+    const imdbRatings = data.map(d => d.imdb);
     const imdbMin = Math.min(...imdbRatings);
     const imdbMax = Math.max(...imdbRatings);
 
@@ -82,7 +83,7 @@ class ScatterReactMobx extends React.Component<{}, {
     return (
       <div>
         <div>
-          <button onClick={this.updateData}>
+          <button onClick={movieStore.updateData}>
             {'Update Data'}
           </button>
           <input
@@ -90,13 +91,13 @@ class ScatterReactMobx extends React.Component<{}, {
             min={1}
             max={2000}
             step={10}
-            value={this.state.numberOfPoints}
-            onChange={this.setNumberOfPoints}
+            value={movieStore.numberOfPoints}
+            onChange={movieStore.setNumberOfPoints}
           />
-          {this.state.numberOfPoints}
+          {movieStore.numberOfPoints}
         </div>
         <div>
-          {`Currently using ${this.state.data.length} points`}
+          {`Currently using ${data.length} points`}
         </div>
         <svg
           style={{
@@ -105,16 +106,17 @@ class ScatterReactMobx extends React.Component<{}, {
           height={height}
           width={width}
         >
-          {this.state.data.map(d => {
-            const active = this.state.active ? this.state.active.title === d.title : null;
+          {data.map(d => {
+            const active = movieStore.active ? movieStore.active.title === d.title : null;
             return (
               <g
+                key={d.title}
                 transform={`translate(${imdbAxis(d.imdb)}, ${rottenAxis(d.rotten)})`}
                 style={{
                   transition: `transform ease-in-out ${transitionTime}ms`
                 }}
-                onMouseEnter={() => this.onMouseEnter(d)}
-                onMouseLeave={() => this.onMouseLeave()}
+                onMouseEnter={() => movieStore.setActive(d)}
+                onMouseLeave={() => movieStore.setActive(null)}
               >
                 <circle
                   fill='red'
@@ -139,4 +141,10 @@ class ScatterReactMobx extends React.Component<{}, {
   }
 }
 
-export default ScatterReactMobx;
+const ScatterReactMobxContainer = () => (
+  <Provider movieStore={movieStore}>
+    <ScatterReactMobx />
+  </Provider>
+);
+
+export default ScatterReactMobxContainer;
