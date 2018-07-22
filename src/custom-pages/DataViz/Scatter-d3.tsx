@@ -16,7 +16,10 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
     right: 10,
   };
 
-  const range = [margins.left, scaleRange - (margins.left + margins.right)];
+  const range = [
+    margins.left,
+    scaleRange - (margins.left + margins.right)
+  ];
 
   const transitionDuration = 1000;
   const radius = 5;
@@ -42,7 +45,8 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
     const containers = svg.selectAll(`.${containerClassName}`)
       .data(data, (d: Movie) => d.title);
 
-    const transform = (d: Movie) => `translate(${imdbAxis(d.imdb)}, ${rottenAxis(d.rotten)})`;
+    const transform = (d: Movie) =>
+      `translate(${imdbAxis(d.imdb)}, ${rottenAxis(d.rotten)})`;
 
     const containersEnter = containers
       .enter()
@@ -50,12 +54,14 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
       .attr('opacity', 0)
       .attr('class', containerClassName)
       .on('mouseover', function() {
-        d3Selection.select(this)
-          .select('text').attr('opacity', 1);
+        const g = d3Selection.select(this);
+        g.select('circle').attr('r', radius * 2);
+        g.select('text').attr('opacity', 1);
       })
       .on('mouseout', function() {
-        d3Selection.select(this)
-          .select('text').attr('opacity', 1);
+        const g = d3Selection.select(this);
+        g.select('circle').attr('r', radius);
+        g.select('text').attr('opacity', 0);
       });
     containersEnter
       .attr('transform', transform)
@@ -109,11 +115,8 @@ class ScatterD3 extends React.Component {
   }
 
   updateData() {
-    const newData = createMockData()
-    this.setState({
-      data: newData,
-    });
-    this.updateFn(newData);
+    this.data = createMockData()
+    this.updateFn(this.data);
   }
 
   setRef(dom: any) {
@@ -134,6 +137,9 @@ class ScatterD3 extends React.Component {
           </button>
         </div>
         <svg
+          style={{
+            overflow: 'visible'
+          }}
           height={400}
           width={400}
           ref={this.setRef}

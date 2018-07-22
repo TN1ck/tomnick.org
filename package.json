@@ -39,6 +39,7 @@
     "frontmatter": "0.0.3",
     "highlightjs": "^9.10.0",
     "node-sass": "^4.9.0",
+    "raw-loader": "^0.5.1",
     "sass-loader": "^7.0.1",
     "serve": "^6.5.3",
     "showdown": "^1.8.6",
