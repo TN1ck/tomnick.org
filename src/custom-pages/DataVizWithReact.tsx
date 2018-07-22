@@ -7,6 +7,8 @@ import ScatterReact from './DataViz/Scatter-React';
 
 // @ts-ignore
 import scatterd3code from '!raw-loader!./DataViz/Scatter-d3.tsx';
+// @ts-ignore
+import scatterReactcode from '!raw-loader!./DataViz/Scatter-React.tsx';
 
 const post: Post = {
   body: '',
@@ -98,11 +100,28 @@ The shortcomings of this solution are the general shortcomings when using d3:
 # React
 
 We now build this chart with React and use TransitionGroup and CSSTransition for the animations. Let's see how this works.
-
 `
 }
-</Markdown>
-<ScatterReact />
+      </Markdown>
+      <ScatterReact />
+      <Markdown>
+        {`
+The code below now uses React for rendering the chart. We still use d3 to set up the scales, but nothing more. The code is exactly the same as in the version above. We now use \`setState\` to update the state and let React handle the rest. \`TransitionGroup\` and \`CSSTransition\` are used for animated new and deleted elements. As we are now using CSS for the animation, there are also some new CSS classes. Beware that this code currently does not work in Edge, as SVG CSS animations are not functional there.
+
+\`\`\`tsx
+${scatterReactcode}
+\`\`\`
+
+The code above looks a lot simpler. I can totally understand the created html and everything looks more friendly. From a user perspective, it's hard to see a difference. CSS animations work amazingly well here and it is as fluid as the React version.
+When one often changes the state, it becomes clear, that only the updated elements are updated from their current position, new and deleted elements fade in and out, despite the animation never finishing. But who really cares?
+Because I have some experience with this approach, some things are not that obvious here:
+
+* Performance wise, it's quite expensive to use this approach, as when the number of elements grows, React needs to execute the lifecycle for each element.
+* It's not as powerful as the d3 version. For example, it's not possibleu to let the deleted elements move with the new scales, with d3 it would be trivial
+* We can only use CSS transitions here, which makes it impossible to animate things like \`<path />\`.
+* Some browsers won't animate the style in SVGs
+        `}
+      </Markdown>
       </PostComponent>
     );
   }
