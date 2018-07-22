@@ -167,6 +167,9 @@ class ScatterD3 extends React.Component<{}, {
           />
           {this.state.numberOfPoints}
         </div>
+        <div>
+          {`Currently using ${this.state.data.length} points`}
+        </div>
         <svg
           style={{
             overflow: 'visible'

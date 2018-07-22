@@ -4,6 +4,7 @@ import { Post } from '../types';
 import Markdown from '../util/Markdown';
 import ScatterD3 from './DataViz/Scatter-d3';
 import ScatterReact from './DataViz/Scatter-React';
+import ScatterReactMobx from './DataViz/Scatter-React-Mobx';
 
 // @ts-ignore
 import scatterd3code from '!raw-loader!./DataViz/Scatter-d3.tsx';
@@ -122,6 +123,12 @@ Because I have some experience with this approach, some things are not that obvi
 * Some browsers won't animate the style in SVGs
         `}
       </Markdown>
+      <Markdown>
+        {`
+# React with Mobx
+        `}
+      </Markdown>
+      <ScatterReactMobx />
       </PostComponent>
     );
   }

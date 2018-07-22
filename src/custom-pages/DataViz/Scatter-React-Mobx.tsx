@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
 import { Movie, createMockData } from './data';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-class ScatterReact extends React.Component<{}, {
+class ScatterReactMobx extends React.Component<{}, {
   data: Movie[];
   numberOfPoints: number;
   active: Movie;
@@ -89,7 +88,7 @@ class ScatterReact extends React.Component<{}, {
           <input
             type="range"
             min={1}
-            max={500}
+            max={2000}
             step={10}
             value={this.state.numberOfPoints}
             onChange={this.setNumberOfPoints}
@@ -106,49 +105,38 @@ class ScatterReact extends React.Component<{}, {
           height={height}
           width={width}
         >
-          <TransitionGroup component="g">
-            {this.state.data.map(d => {
-              const active = this.state.active ? this.state.active.title === d.title : null;
-              return (
-                <CSSTransition
-                  component={'g'}
-                  timeout={transitionTime}
-                  classNames='fade'
-                  key={d.title}
+          {this.state.data.map(d => {
+            const active = this.state.active ? this.state.active.title === d.title : null;
+            return (
+              <g
+                transform={`translate(${imdbAxis(d.imdb)}, ${rottenAxis(d.rotten)})`}
+                style={{
+                  transition: `transform ease-in-out ${transitionTime}ms`
+                }}
+                onMouseEnter={() => this.onMouseEnter(d)}
+                onMouseLeave={() => this.onMouseLeave()}
+              >
+                <circle
+                  fill='red'
+                  cx={0}
+                  cy={0}
+                  r={active ? radius * 2 : radius}
+                />
+                <text
+                  fontSize={10}
+                  x={radius * 2}
+                  y={radius / 2}
+                  opacity={active ? 1 : 0}
                 >
-                  <g>
-                    <g
-                      transform={`translate(${imdbAxis(d.imdb)}, ${rottenAxis(d.rotten)})`}
-                      style={{
-                        transition: `transform ease-in-out ${transitionTime}ms`
-                      }}
-                      onMouseEnter={() => this.onMouseEnter(d)}
-                      onMouseLeave={() => this.onMouseLeave()}
-                    >
-                      <circle
-                        fill='red'
-                        cx={0}
-                        cy={0}
-                        r={active ? radius * 2 : radius}
-                      />
-                      <text
-                        fontSize={10}
-                        x={radius * 2}
-                        y={radius / 2}
-                        opacity={active ? 1 : 0}
-                      >
-                        {d.title}
-                      </text>
-                    </g>
-                  </g>
-                </CSSTransition>
-              );
-            })}
-          </TransitionGroup>
+                  {d.title}
+                </text>
+              </g>
+            );
+          })}
         </svg>
       </div>
     );
   }
 }
 
-export default ScatterReact;
+export default ScatterReactMobx;
