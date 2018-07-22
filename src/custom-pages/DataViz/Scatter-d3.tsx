@@ -98,25 +98,47 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
       .transition()
       .duration(transitionDuration)
       // .attr('transform', transformCircle)
-      .attr('opacity', 0);
+      .attr('opacity', 0)
+      .remove();
   }
 
 }
 
-class ScatterD3 extends React.Component {
-  root: SVGElement;
+class ScatterD3 extends React.Component<{}, {
   data: Movie[];
+  numberOfPoints: number;
+}> {
+  root: SVGElement;
   updateFn: (movies: Movie[]) => any;
   constructor(props: any) {
     super(props);
     this.setRef = this.setRef.bind(this);
     this.updateData = this.updateData.bind(this);
-    this.data = createMockData();
+    this.setNumberOfPoints = this.setNumberOfPoints.bind(this);
+    const numberOfPoints = 100;
+    this.state = {
+      data: createMockData(numberOfPoints),
+      numberOfPoints,
+    };
   }
 
   updateData() {
-    this.data = createMockData()
-    this.updateFn(this.data);
+    const data = createMockData(this.state.numberOfPoints)
+    this.updateFn(data);
+    this.setState({
+      data,
+    })
+  }
+
+  setNumberOfPoints(e: any) {
+    const numberOfPoints = parseInt(e.target.value);
+    const data = createMockData(numberOfPoints);
+    this.setState({
+      data,
+      numberOfPoints,
+    });
+    this.updateFn(data);
+
   }
 
   setRef(dom: any) {
@@ -125,7 +147,7 @@ class ScatterD3 extends React.Component {
 
   componentDidMount() {
     this.updateFn = scatterD3(this.root);
-    this.updateFn(this.data);
+    this.updateFn(this.state.data);
   }
 
   render() {
@@ -135,6 +157,15 @@ class ScatterD3 extends React.Component {
           <button onClick={this.updateData}>
             {'Update Data'}
           </button>
+          <input
+            type="range"
+            min={1}
+            max={2000}
+            step={10}
+            value={this.state.numberOfPoints}
+            onChange={this.setNumberOfPoints}
+          />
+          {this.state.numberOfPoints}
         </div>
         <svg
           style={{

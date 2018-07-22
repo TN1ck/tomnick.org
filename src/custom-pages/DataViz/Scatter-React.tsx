@@ -5,19 +5,32 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 class ScatterReact extends React.Component<{}, {
   data: Movie[];
+  numberOfPoints: number;
   active: Movie;
 }> {
   constructor(props: any) {
     super(props);
     this.updateData = this.updateData.bind(this);
+    this.setNumberOfPoints = this.setNumberOfPoints.bind(this);
+    const numberOfPoints = 100;
     this.state = {
-      data: createMockData(),
+      data: createMockData(numberOfPoints),
       active: null,
+      numberOfPoints,
     }
   }
 
+  setNumberOfPoints(e: any) {
+    const numberOfPoints = parseInt(e.target.value);
+    const data = createMockData(numberOfPoints);
+    this.setState({
+      data,
+      numberOfPoints,
+    });
+  }
+
   updateData() {
-    const newData = createMockData()
+    const newData = createMockData(this.state.numberOfPoints)
     this.setState({
       data: newData,
     });
@@ -73,6 +86,15 @@ class ScatterReact extends React.Component<{}, {
           <button onClick={this.updateData}>
             {'Update Data'}
           </button>
+          <input
+            type="range"
+            min={1}
+            max={500}
+            step={10}
+            value={this.state.numberOfPoints}
+            onChange={this.setNumberOfPoints}
+          />
+          {this.state.numberOfPoints}
         </div>
         <svg
           style={{

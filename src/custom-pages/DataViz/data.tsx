@@ -5,8 +5,8 @@ export interface Movie {
   description: string;
 }
 
-export function createMockData(): Movie[] {
-  return Array(Math.ceil(Math.random() * 50)).fill(1).map((_, i: number) => {
+export function createMockData(numberOfPoints: number = 50): Movie[] {
+  return Array(Math.ceil(Math.random() * numberOfPoints)).fill(1).map((_, i: number) => {
     const imdb = Math.round(Math.random() * 100) / 10;
     return {
       imdb,
