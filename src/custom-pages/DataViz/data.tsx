@@ -6,10 +6,11 @@ export interface Movie {
 }
 
 export function createMockData(): Movie[] {
-  return Array(Math.ceil(Math.random() * 200)).fill(1).map((_, i: number) => {
+  return Array(Math.ceil(Math.random() * 50)).fill(1).map((_, i: number) => {
+    const imdb = Math.round(Math.random() * 100) / 10;
     return {
-      imdb: Math.random() * 10,
-      rotten: Math.random() * 5,
+      imdb,
+      rotten: Math.round((imdb / 2 + ((imdb / 4) * (Math.random() - 0.5))) * 10) / 10,
       title: 'Something ' + i,
       description: 'Something something ' + i,
     };

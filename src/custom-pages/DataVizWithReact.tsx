@@ -74,6 +74,15 @@ Let's start with the d3 version, it will be easy to do and create a high bar of 
           `}
         </Markdown>
         <ScatterD3 />
+<Markdown>
+{
+`
+\`\`\`
+TODO: Insert Code
+\`\`\`
+`
+}
+</Markdown>
       </PostComponent>
     );
   }
