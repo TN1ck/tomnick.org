@@ -28,36 +28,6 @@ const post: Post = {
   },
 }
 
-class FPSMeasure extends React.Component<{}, {
-  fps: number;
-}> {
-  lastUpdate: number = performance.now();
-  constructor(props) {
-    super(props);
-    this.state = {
-      fps: 0,
-    };
-  }
-  componentDidMount() {
-    const update = () => {
-      const now = performance.now();
-      const diff = now - this.lastUpdate;
-      const fps = 1000 / diff;
-      this.lastUpdate = now;
-      this.setState({
-        fps,
-      });
-      requestAnimationFrame(update);
-    }
-    update();
-  }
-  render() {
-    return (
-      <div>{`FPS ${Math.ceil(this.state.fps)}`}</div>
-    )
-  }
-}
-
 class DataVizWithReact extends React.Component {
 
   render() {
@@ -158,7 +128,6 @@ Because I have some experience with this approach, some things are not that obvi
 # React with Mobx
         `}
       </Markdown>
-      <FPSMeasure />
       <ScatterReactMobx />
       </PostComponent>
     );

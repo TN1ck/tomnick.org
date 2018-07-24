@@ -3,16 +3,9 @@ import {observable, action, observe} from 'mobx';
 import * as d3Scale from 'd3-scale';
 import {interpolateNumber} from 'd3-interpolate';
 import {observer, Provider, inject} from 'mobx-react';
-import { Movie, createMockData } from './data';
-
-const width = 400;
-const height = 400;
-const transitionTime = 1000;
-const radius = 5;
-const margins = {
-  left: 10,
-  right: 10,
-};
+import { Movie } from './data';
+import config from './config';
+import ScatterWrapper from './ScatterWrapper';
 
 interface MovieLayouted {
   movie: Movie;
@@ -84,10 +77,13 @@ function easeInOutQuad(t: number) {
 
 function layoutMovies(movies: Movie[]): MovieLayouted[] {
 
+  const width = config.width;
+  const height = config.height;
+
   const scaleRange = Math.min(height, width);
   const range = [
-    margins.left,
-    scaleRange - (margins.left + margins.right)
+    0,
+    scaleRange,
   ];
 
   const rottenRatings = movies.map(d => d.rotten);
@@ -128,9 +124,9 @@ class MovieState {
   constructor() {
     this.numberOfPoints = 100;
     this.active = null;
-    this.movies = createMockData(this.numberOfPoints);
-    this.updateData = this.updateData.bind(this);
+    this.movies = [];
     this.setActive = this.setActive.bind(this);
+    this.setData = this.setData.bind(this);
     this.setNumberOfPoints = this.setNumberOfPoints.bind(this);
     this.layoutedMovies = layoutMovies(this.movies);
 
@@ -149,8 +145,8 @@ class MovieState {
       let fromInterpolate = layoutMovies(oldValue);
       const toInterpolate = layoutMovies(newValue);
 
-      if (diffToLastUpdate > 0 && diffToLastUpdate < transitionTime) {
-        const t = diffToLastUpdate / transitionTime;
+      if (diffToLastUpdate > 0 && diffToLastUpdate < config.transitionTime) {
+        const t = diffToLastUpdate / config.transitionTime;
         fromInterpolate = this.currentInterpolation.map(m => m(easeInOutQuad(t)));
       }
       const interpolation = interpolateMovies(
@@ -178,8 +174,8 @@ class MovieState {
   }
 
   @action
-  updateData() {
-    this.movies = createMockData(this.numberOfPoints);
+  setData(data: Movie[]) {
+    this.movies = data;
   }
 
   @action
@@ -203,38 +199,23 @@ class ScatterReactMobx extends React.Component<{
 
     return (
       <div>
-        <div>
-          <button onClick={movieStore.updateData}>
-            {'Update Data'}
-          </button>
-          <input
-            type="range"
-            min={1}
-            max={2000}
-            step={10}
-            value={movieStore.numberOfPoints}
-            onChange={movieStore.setNumberOfPoints}
-          />
-          {movieStore.numberOfPoints}
-        </div>
-        <div>
-          {`Currently using ${data.length} points`}
-        </div>
+        <ScatterWrapper
+          updateData={movieStore.setData}
+        />
         <svg
           style={{
             overflow: 'visible'
           }}
-          height={height}
-          width={width}
+          height={config.height}
+          width={config.width}
         >
           {data.map(d => {
-            const active = movieStore.active ? movieStore.active.title === d.movie.title : null;
             return (
               <g
                 key={d.movie.title}
                 transform={`translate(${d.x}, ${d.y})`}
                 style={{
-                  transitionDuration: transitionTime + 'ms',
+                  transitionDuration: config.transitionTime + 'ms',
                   transitionTimingFunction: 'ease-in-out',
                   transitionProperty: 'transform, opacity',
                 }}
@@ -246,16 +227,8 @@ class ScatterReactMobx extends React.Component<{
                   fill='red'
                   cx={0}
                   cy={0}
-                  r={active ? radius * 2 : radius}
+                  r={config.radius}
                 />
-                <text
-                  fontSize={10}
-                  x={radius * 2}
-                  y={radius / 2}
-                  opacity={active ? 1 : 0}
-                >
-                  {d.movie.title}
-                </text>
               </g>
             );
           })}

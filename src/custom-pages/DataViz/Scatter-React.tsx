@@ -1,65 +1,35 @@
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
-import { Movie, createMockData } from './data';
+import { Movie } from './data';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import ScatterWrapper from './ScatterWrapper';
+import config from './config';
 
 class ScatterReact extends React.Component<{}, {
   data: Movie[];
-  numberOfPoints: number;
-  active: Movie;
 }> {
   constructor(props: any) {
     super(props);
     this.updateData = this.updateData.bind(this);
-    this.setNumberOfPoints = this.setNumberOfPoints.bind(this);
-    const numberOfPoints = 100;
     this.state = {
-      data: createMockData(numberOfPoints),
-      active: null,
-      numberOfPoints,
-    }
+      data: [],
+    };
   }
 
-  setNumberOfPoints(e: any) {
-    const numberOfPoints = parseInt(e.target.value);
-    this.setState({
-      numberOfPoints,
-    });
-  }
-
-  updateData() {
-    const newData = createMockData(this.state.numberOfPoints)
-    this.setState({
-      data: newData,
-    });
-  }
-
-  onMouseEnter(movie: Movie) {
-    this.setState({
-      active: movie,
-    });
-  }
-
-  onMouseLeave() {
-    this.setState({
-      active: null,
-    });
+  updateData(data: Movie[]) {
+    this.setState({data});
   }
 
   render() {
+    const width = config.width;
+    const height = config.height;
 
-    const width = 400;
-    const height = 400;
-    const transitionTime = 1000;
+    const transitionTime = config.transitionTime;
     const scaleRange = Math.min(height, width);
-    const margins = {
-      left: 10,
-      right: 10,
-    };
-    const radius = 5;
+    const radius = config.radius;
     const range = [
-      margins.left,
-      scaleRange - (margins.left + margins.right)
+      0,
+      scaleRange,
     ];
 
     const rottenRatings = this.state.data.map(d => d.rotten);
@@ -80,23 +50,9 @@ class ScatterReact extends React.Component<{}, {
 
     return (
       <div>
-        <div>
-          <button onClick={this.updateData}>
-            {'Update Data'}
-          </button>
-          <input
-            type="range"
-            min={1}
-            max={500}
-            step={10}
-            value={this.state.numberOfPoints}
-            onChange={this.setNumberOfPoints}
-          />
-          {this.state.numberOfPoints}
-        </div>
-        <div>
-          {`Currently using ${this.state.data.length} points`}
-        </div>
+        <ScatterWrapper
+          updateData={this.updateData}
+        />
         <svg
           style={{
             overflow: 'visible'
@@ -106,7 +62,6 @@ class ScatterReact extends React.Component<{}, {
         >
           <TransitionGroup component="g">
             {this.state.data.map(d => {
-              const active = this.state.active ? this.state.active.title === d.title : null;
               return (
                 <CSSTransition
                   component={'g'}
@@ -120,23 +75,13 @@ class ScatterReact extends React.Component<{}, {
                       style={{
                         transition: `transform ease-in-out ${transitionTime}ms`
                       }}
-                      onMouseEnter={() => this.onMouseEnter(d)}
-                      onMouseLeave={() => this.onMouseLeave()}
                     >
                       <circle
                         fill='red'
                         cx={0}
                         cy={0}
-                        r={active ? radius * 2 : radius}
+                        r={radius}
                       />
-                      <text
-                        fontSize={10}
-                        x={radius * 2}
-                        y={radius / 2}
-                        opacity={active ? 1 : 0}
-                      >
-                        {d.title}
-                      </text>
                     </g>
                   </g>
                 </CSSTransition>

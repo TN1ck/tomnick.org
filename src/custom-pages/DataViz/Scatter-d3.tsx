@@ -3,6 +3,8 @@ import * as d3Selection from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import 'd3-transition';
 import { Movie, createMockData } from './data';
+import ScatterWrapper from './ScatterWrapper';
+import config from './config';
 
 
 function scatterD3(root: SVGElement): (data: Movie[]) => any  {
@@ -11,18 +13,14 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
   const height = root.clientHeight;
   const width = root.clientWidth;
   const scaleRange = Math.min(height, width);
-  const margins = {
-    left: 10,
-    right: 10,
-  };
 
   const range = [
-    margins.left,
-    scaleRange - (margins.left + margins.right)
+    0,
+    scaleRange,
   ];
 
-  const transitionDuration = 1000;
-  const radius = 5;
+  const transitionDuration = config.transitionTime;
+  const radius = config.radius;
 
   return function update(data: Movie[]) {
     const rottenRatings = data.map(d => d.rotten);
@@ -108,13 +106,13 @@ class ScatterD3 extends React.Component<{}, {
   data: Movie[];
   numberOfPoints: number;
 }> {
+  data: Movie[];
   root: SVGElement;
   updateFn: (movies: Movie[]) => any;
   constructor(props: any) {
     super(props);
     this.setRef = this.setRef.bind(this);
     this.updateData = this.updateData.bind(this);
-    this.setNumberOfPoints = this.setNumberOfPoints.bind(this);
     const numberOfPoints = 100;
     this.state = {
       data: createMockData(numberOfPoints),
@@ -122,19 +120,12 @@ class ScatterD3 extends React.Component<{}, {
     };
   }
 
-  updateData() {
-    const data = createMockData(this.state.numberOfPoints)
-    this.updateFn(data);
-    this.setState({
-      data,
-    })
-  }
-
-  setNumberOfPoints(e: any) {
-    const numberOfPoints = parseInt(e.target.value);
-    this.setState({
-      numberOfPoints,
-    });
+  updateData(data: Movie[]) {
+    if (this.updateFn) {
+      this.updateFn(data);
+    } else {
+      this.data = data;
+    }
   }
 
   setRef(dom: any) {
@@ -143,29 +134,13 @@ class ScatterD3 extends React.Component<{}, {
 
   componentDidMount() {
     this.updateFn = scatterD3(this.root);
-    this.updateFn(this.state.data);
+    this.updateFn(this.data);
   }
 
   render() {
     return (
       <div>
-        <div>
-          <button onClick={this.updateData}>
-            {'Update Data'}
-          </button>
-          <input
-            type="range"
-            min={1}
-            max={2000}
-            step={10}
-            value={this.state.numberOfPoints}
-            onChange={this.setNumberOfPoints}
-          />
-          {this.state.numberOfPoints}
-        </div>
-        <div>
-          {`Currently using ${this.state.data.length} points`}
-        </div>
+        <ScatterWrapper updateData={this.updateData} />
         <svg
           style={{
             overflow: 'visible'
