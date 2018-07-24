@@ -22,9 +22,7 @@ class ScatterReact extends React.Component<{}, {
 
   setNumberOfPoints(e: any) {
     const numberOfPoints = parseInt(e.target.value);
-    const data = createMockData(numberOfPoints);
     this.setState({
-      data,
       numberOfPoints,
     });
   }

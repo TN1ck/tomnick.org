@@ -28,6 +28,36 @@ const post: Post = {
   },
 }
 
+class FPSMeasure extends React.Component<{}, {
+  fps: number;
+}> {
+  lastUpdate: number = performance.now();
+  constructor(props) {
+    super(props);
+    this.state = {
+      fps: 0,
+    };
+  }
+  componentDidMount() {
+    const update = () => {
+      const now = performance.now();
+      const diff = now - this.lastUpdate;
+      const fps = 1000 / diff;
+      this.lastUpdate = now;
+      this.setState({
+        fps,
+      });
+      requestAnimationFrame(update);
+    }
+    update();
+  }
+  render() {
+    return (
+      <div>{`FPS ${Math.ceil(this.state.fps)}`}</div>
+    )
+  }
+}
+
 class DataVizWithReact extends React.Component {
 
   render() {
@@ -47,14 +77,14 @@ Everyone who build (or tried to build) a chart with React knows its biggest pain
 We'll build a scatter plot as shown below, first in d3, then in React, then in React + mobx.
 The scatter plot compares the ratings of imdb and rotten tomatoes by using the imdb ratings on the x axis, and the rotten tomatoes on the y axis. The underlying data looks like
 
-\`\`\`js
+\`\`\`javascript
 const someMovie = {
   rotten: 8.5,
   imdb: 9,
   title: "Some movie";
   genres: ["Action", "Sci-Fi", "Drama"],
   picture: "https://cdn.domain.com/somepicture.jpg";
-}
+};
 \`\`\`
 
 You can download the data [here](https://tomnick.org/TODO). I actually created the dataset, because I wasn't satisfied with the ones I found online.
@@ -87,7 +117,7 @@ Let's start with the d3 version, it will be easy to do and create a high bar of 
 {
 `
 The code for this chart can be seen below. We use a React component called \`ScatterD3\` to create the dom element and manage the data updates of the d3 code. We do this by creating a \`svg\`, which ref we're saving and using this ref to initialize the d3 code by calling \`scatterD3\` with it. \`scatterD3\` returns a function that takes the movie data as an argument und does its thing. We're saving this function in our component and call it everytime we update our data.
-\`\`\`tsx
+\`\`\`javascript
 ${scatterd3code}
 \`\`\`
 
@@ -109,7 +139,7 @@ We now build this chart with React and use TransitionGroup and CSSTransition for
         {`
 The code below now uses React for rendering the chart. We still use d3 to set up the scales, but nothing more. The code is exactly the same as in the version above. We now use \`setState\` to update the state and let React handle the rest. \`TransitionGroup\` and \`CSSTransition\` are used for animated new and deleted elements. As we are now using CSS for the animation, there are also some new CSS classes. Beware that this code currently does not work in Edge, as SVG CSS animations are not functional there.
 
-\`\`\`tsx
+\`\`\`javascript
 ${scatterReactcode}
 \`\`\`
 
@@ -128,6 +158,7 @@ Because I have some experience with this approach, some things are not that obvi
 # React with Mobx
         `}
       </Markdown>
+      <FPSMeasure />
       <ScatterReactMobx />
       </PostComponent>
     );

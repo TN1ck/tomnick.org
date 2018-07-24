@@ -85,16 +85,11 @@ export default {
 
     const blogChildren = sortedPosts.map((post) => ({
       path: `/${post.id}`,
-      component: "src/containers/Post",
+      component: post.attributes.component || "src/containers/Post",
       getData: () => ({
         post,
       }),
-    })).concat([
-      {
-        path: '/dataviz-with-react',
-        component: 'src/custom-pages/DataVizWithReact',
-      }
-    ]);
+    }));
 
     return [
       {

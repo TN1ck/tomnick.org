@@ -174,9 +174,7 @@ class MovieState {
   @action
   setNumberOfPoints(e: any) {
     const numberOfPoints = parseInt(e.target.value);
-    const movies = createMockData(numberOfPoints);
     this.numberOfPoints = numberOfPoints;
-    this.movies = movies;
   }
 
   @action

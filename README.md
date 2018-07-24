@@ -7,6 +7,6 @@ The project is using:
 * Typescript
 * React
 * Showdown to parse the markdown
-* HighlightJS for code blocks
+* PrismJS for code blocks
 * Sass for styles
 * React-static for pre compilation

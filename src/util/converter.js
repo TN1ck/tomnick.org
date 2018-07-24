@@ -1,5 +1,8 @@
-import showdown from "showdown";
-import highlightjs from "highlightjs";
+import showdown from 'showdown';
+import 'prismjs';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
 
 showdown.extension("codehighlight", () => {
   function htmlunencode (text) {
@@ -20,7 +23,7 @@ showdown.extension("codehighlight", () => {
           // unescape match to prevent double escaping
           match = htmlunencode(match);
           const leftNew = left.replace("<pre>", "<pre class='hljs'>");
-          return leftNew + highlightjs.highlightAuto(match).value + right;
+          return leftNew + Prism.highlight(match, Prism.languages.tsx) + right;
         };
         return showdown.helper.replaceRecursiveRegExp(text, replacement, left, right, flags);
       },

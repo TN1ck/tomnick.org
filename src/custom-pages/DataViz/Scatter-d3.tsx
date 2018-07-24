@@ -132,13 +132,9 @@ class ScatterD3 extends React.Component<{}, {
 
   setNumberOfPoints(e: any) {
     const numberOfPoints = parseInt(e.target.value);
-    const data = createMockData(numberOfPoints);
     this.setState({
-      data,
       numberOfPoints,
     });
-    this.updateFn(data);
-
   }
 
   setRef(dom: any) {
