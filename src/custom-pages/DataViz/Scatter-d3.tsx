@@ -12,15 +12,11 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
 
   const height = root.clientHeight;
   const width = root.clientWidth;
-  const scaleRange = Math.min(height, width);
 
-  const range = [
-    0,
-    scaleRange,
-  ];
+  const rottenRange = [0, height];
+  const imdbRange = [0, width];
 
   const transitionDuration = config.transitionTime;
-  const radius = config.radius;
 
   return function update(data: Movie[]) {
     const rottenRatings = data.map(d => d.rotten);
@@ -29,7 +25,7 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
 
     const rottenAxis = d3Scale.scaleLinear()
       .domain([rottenMin, rottenMax])
-      .range([...range].reverse());
+      .range(rottenRange);
 
     const imdbRatings = data.map(d => d.imdb);
     const imdbMin = Math.min(...imdbRatings);
@@ -37,67 +33,38 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
 
     const imdbAxis = d3Scale.scaleLinear()
       .domain([imdbMin, imdbMax])
-      .range(range);
+      .range(imdbRange);
 
-    const containerClassName = 'd3-g-container';
-    const containers = svg.selectAll(`.${containerClassName}`)
+    const circleClassName = 'd3-circle';
+    const circles = svg.selectAll(`.${circleClassName}`)
       .data(data, (d: Movie) => d.title);
 
-    const transform = (d: Movie) =>
-      `translate(${imdbAxis(d.imdb)}, ${rottenAxis(d.rotten)})`;
+    const transformCircle = (d: Movie) => `translate(${imdbAxis(d.imdb)}, ${rottenAxis(d.rotten)})`;
 
-    const containersEnter = containers
-      .enter()
-      .append('g')
+    circles.enter()
+      .append('circle')
+      .attr('class', circleClassName)
+      .attr('r', config.radius)
+      .attr('cx', 0)
+      .attr('cy', 0)
       .attr('opacity', 0)
-      .attr('class', containerClassName)
-      .on('mouseover', function() {
-        const g = d3Selection.select(this);
-        g.select('circle').attr('r', radius * 2);
-        g.select('text').attr('opacity', 1);
-      })
-      .on('mouseout', function() {
-        const g = d3Selection.select(this);
-        g.select('circle').attr('r', radius);
-        g.select('text').attr('opacity', 0);
-      });
-    containersEnter
-      .attr('transform', transform)
+      .attr('transform', transformCircle)
         .transition()
         .duration(transitionDuration)
         .attr('opacity', 1);
 
-    // append circle
-    containersEnter
-      .append('circle')
-        .attr('fill', 'red')
-        .attr('r', radius)
-        .attr('cx', 0)
-        .attr('cy', 0);
-
-    // append text
-    containersEnter
-      .append('text')
-      .attr('font-size', '10px')
-      .attr('x', radius * 2)
-      .attr('y', radius / 2)
-      .attr('opacity', 0)
-      .attr('pointer-events', 'none')
-      .text(d => `${d.title} - ${d.imdb} / ${d.rotten}`)
-
-    containers
+    circles
       .transition()
       .duration(transitionDuration)
-      .attr('transform', transform)
+      .attr('transform', transformCircle)
       .attr('opacity', 1)
 
-    containers
+    circles
       .exit()
       .transition()
       .duration(transitionDuration)
       // .attr('transform', transformCircle)
-      .attr('opacity', 0)
-      .remove();
+      .attr('opacity', 0);
   }
 
 }
@@ -139,15 +106,14 @@ class ScatterD3 extends React.Component<{}, {
 
   render() {
     return (
-      <div>
+      <div className="scatter-chart-container">
         <ScatterWrapper updateData={this.updateData} />
         <svg
           style={{
             overflow: 'visible'
           }}
-          height={400}
-          width={400}
           ref={this.setRef}
+          className="scatter-chart"
         />
       </div>
     );

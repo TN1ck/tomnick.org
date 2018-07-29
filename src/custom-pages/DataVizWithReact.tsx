@@ -15,7 +15,7 @@ const post: Post = {
   body: '',
   id: 'data-viz-with-react',
   attributes: {
-    title: 'The best way to build animated charts with React',
+    title: 'How to build blazing fast Reat charts',
     date: '2018-07-22',
     author: 'Tom Nick',
     categories: [],
@@ -51,9 +51,8 @@ The scatter plot compares the ratings of imdb and rotten tomatoes by using the i
 const someMovie = {
   rotten: 8.5,
   imdb: 9,
-  title: "Some movie";
-  genres: ["Action", "Sci-Fi", "Drama"],
-  picture: "https://cdn.domain.com/somepicture.jpg";
+  title: "Some movie",
+  description: "Such a good movie.",
 };
 \`\`\`
 

@@ -7,13 +7,27 @@ import config from './config';
 
 class ScatterReact extends React.Component<{}, {
   data: Movie[];
+  width: number;
+  height: number;
 }> {
   constructor(props: any) {
     super(props);
     this.updateData = this.updateData.bind(this);
+    this.setRef = this.setRef.bind(this);
     this.state = {
       data: [],
+      width: 1,
+      height: 1,
     };
+  }
+
+  setRef(dom: SVGElement) {
+    const height = dom.clientHeight;
+    const width = dom.clientWidth;
+    this.setState({
+      height,
+      width
+    });
   }
 
   updateData(data: Movie[]) {
@@ -21,16 +35,20 @@ class ScatterReact extends React.Component<{}, {
   }
 
   render() {
-    const width = config.width;
-    const height = config.height;
+
+    const width = this.state.width;
+    const height = this.state.height;
 
     const transitionTime = config.transitionTime;
-    const scaleRange = Math.min(height, width);
     const radius = config.radius;
-    const range = [
+    const rangeRotten = [
       0,
-      scaleRange,
+      height,
     ];
+    const rangeImdb = [
+      0,
+      width,
+    ]
 
     const rottenRatings = this.state.data.map(d => d.rotten);
     const rottenMin = Math.min(...rottenRatings);
@@ -38,7 +56,7 @@ class ScatterReact extends React.Component<{}, {
 
     const rottenAxis = d3Scale.scaleLinear()
       .domain([rottenMin, rottenMax])
-      .range([...range].reverse());
+      .range(rangeRotten);
 
     const imdbRatings = this.state.data.map(d => d.imdb);
     const imdbMin = Math.min(...imdbRatings);
@@ -46,19 +64,16 @@ class ScatterReact extends React.Component<{}, {
 
     const imdbAxis = d3Scale.scaleLinear()
       .domain([imdbMin, imdbMax])
-      .range(range);
+      .range(rangeImdb);
 
     return (
-      <div>
+      <div className="scatter-chart-container">
         <ScatterWrapper
           updateData={this.updateData}
         />
         <svg
-          style={{
-            overflow: 'visible'
-          }}
-          height={height}
-          width={width}
+          className="scatter-chart"
+          ref={this.setRef}
         >
           <TransitionGroup component="g">
             {this.state.data.map(d => {
@@ -69,21 +84,17 @@ class ScatterReact extends React.Component<{}, {
                   classNames='fade'
                   key={d.title}
                 >
-                  <g>
-                    <g
-                      transform={`translate(${imdbAxis(d.imdb)}, ${rottenAxis(d.rotten)})`}
-                      style={{
-                        transition: `transform ease-in-out ${transitionTime}ms`
-                      }}
-                    >
-                      <circle
-                        fill='red'
-                        cx={0}
-                        cy={0}
-                        r={radius}
-                      />
-                    </g>
-                  </g>
+                  <circle
+                    cx={0}
+                    cy={0}
+                    r={radius}
+                    style={{
+                      transitionDuration: config.transitionTime + 'ms',
+                      transitionTimingFunction: 'ease-in-out',
+                      transitionProperty: 'transform, opacity',
+                      transform: `translate3d(${imdbAxis(d.imdb)}px, ${rottenAxis(d.rotten)}px, 0)`,
+                    }}
+                  />
                 </CSSTransition>
               );
             })}

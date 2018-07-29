@@ -75,15 +75,16 @@ function easeInOutQuad(t: number) {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 };
 
-function layoutMovies(movies: Movie[]): MovieLayouted[] {
+function layoutMovies(width: number, height: number, movies: Movie[]): MovieLayouted[] {
 
-  const width = config.width;
-  const height = config.height;
-
-  const scaleRange = Math.min(height, width);
-  const range = [
+  const rangeRotten = [
     0,
-    scaleRange,
+    height,
+  ];
+
+  const rangeImdb = [
+    0,
+    width,
   ];
 
   const rottenRatings = movies.map(d => d.rotten);
@@ -92,7 +93,7 @@ function layoutMovies(movies: Movie[]): MovieLayouted[] {
 
   const rottenAxis = d3Scale.scaleLinear()
     .domain([rottenMin, rottenMax])
-    .range([...range].reverse());
+    .range(rangeRotten);
 
   const imdbRatings = movies.map(d => d.imdb);
   const imdbMin = Math.min(...imdbRatings);
@@ -100,7 +101,7 @@ function layoutMovies(movies: Movie[]): MovieLayouted[] {
 
   const imdbAxis = d3Scale.scaleLinear()
     .domain([imdbMin, imdbMax])
-    .range(range);
+    .range(rangeImdb);
 
   return movies.map(movie => {
     return {
@@ -116,7 +117,9 @@ class MovieState {
   @observable.shallow movies: Movie[];
   @observable numberOfPoints: number;
   @observable active: Movie;
-  @observable.shallow layoutedMovies: MovieLayouted[];
+  @observable.shallow layoutedMovies: MovieLayouted[] = [];
+  @observable width: number = 1;
+  @observable height: number = 1;
 
   lastUpdate: number;
   currentInterpolation: MovieInterpolated[];
@@ -128,22 +131,24 @@ class MovieState {
     this.setActive = this.setActive.bind(this);
     this.setData = this.setData.bind(this);
     this.setNumberOfPoints = this.setNumberOfPoints.bind(this);
-    this.layoutedMovies = layoutMovies(this.movies);
 
     observe(this, 'movies', (change) => {
       const oldValue: Movie[] = change.oldValue;
       const newValue: Movie[] = change.newValue;
 
+      if (this.width === 1 || this.height === 1) {
+        return;
+      }
+
       if (oldValue === newValue) {
-        console.log('what');
         return;
       }
 
       const now = +(new Date());
       const diffToLastUpdate = now - (this.lastUpdate || now);
 
-      let fromInterpolate = layoutMovies(oldValue);
-      const toInterpolate = layoutMovies(newValue);
+      let fromInterpolate = layoutMovies(this.width, this.height, oldValue);
+      const toInterpolate = layoutMovies(this.width, this.height, newValue);
 
       if (diffToLastUpdate > 0 && diffToLastUpdate < config.transitionTime) {
         const t = diffToLastUpdate / config.transitionTime;
@@ -162,9 +167,16 @@ class MovieState {
       // then we apply the end state
       setTimeout(() => {
         this.layoutedMovies = interpolation.map(m => m(1));
-      })
+      });
 
     });
+  }
+
+  @action
+  setWidthHeight(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+    this.layoutedMovies = layoutMovies(width, height, this.movies);
   }
 
   @action
@@ -191,6 +203,15 @@ const movieStore = new MovieState();
 class ScatterReactMobx extends React.Component<{
   movieStore?: MovieState;
 }> {
+  constructor(props) {
+    super(props);
+    this.setRef = this.setRef.bind(this);
+  }
+  setRef(dom: SVGElement) {
+    const height = dom.clientHeight;
+    const width = dom.clientWidth;
+    this.props.movieStore.setWidthHeight(width, height);
+  }
   render() {
 
     const movieStore = this.props.movieStore;
@@ -198,38 +219,31 @@ class ScatterReactMobx extends React.Component<{
     const data = movieStore.layoutedMovies;
 
     return (
-      <div>
+      <div className="scatter-chart-container">
         <ScatterWrapper
           updateData={movieStore.setData}
         />
         <svg
-          style={{
-            overflow: 'visible'
-          }}
-          height={config.height}
-          width={config.width}
+          ref={this.setRef}
+          className="scatter-chart"
         >
           {data.map(d => {
             return (
-              <g
+              <circle
                 key={d.movie.title}
-                transform={`translate(${d.x}, ${d.y})`}
+                cx={0}
+                cy={0}
+                r={config.radius}
                 style={{
                   transitionDuration: config.transitionTime + 'ms',
                   transitionTimingFunction: 'ease-in-out',
                   transitionProperty: 'transform, opacity',
+                  transform: `translate3d(${d.x}px, ${d.y}px, 0)`,
+                  opacity: d.opacity,
                 }}
-                opacity={d.opacity}
                 onMouseEnter={() => movieStore.setActive(d.movie)}
                 onMouseLeave={() => movieStore.setActive(null)}
-              >
-                <circle
-                  fill='red'
-                  cx={0}
-                  cy={0}
-                  r={config.radius}
-                />
-              </g>
+              />
             );
           })}
         </svg>
