@@ -446,9 +446,12 @@ $shadow-padding-vertical: 3px;
       position: relative;
       time {
         font-weight: bold;
-        position: absolute;
-        right: 20px;
+        float: right;
       }
+    }
+
+    .post-job-title {
+      padding-bottom: 7px;
     }
 }
 

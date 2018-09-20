@@ -28,9 +28,10 @@ I'm a developer by heart and love to create products. I spend a lot of time apar
 
 ## <a name="work">Work</a>
 <div class="post post--job">
-<time>Early 2018 - Now</time>
-<strong>Head of Software Engineering @ Infographics Group</strong>
-<br/>
+<div class="post-job-title">
+  <time>Early 2018 - Now</time>
+  <strong>Head of Software Engineering @ Infographics Group</strong>
+</div>
 The <a target="_blank" rel="nofollow"
   class="link" href="https:///infographics.group">IGG</a> is a venture capital funded agency for Infographics. It's a mix between agency and startup. In the startup part we try to bring the the know of visual storytelling & data visualization of the IGG into the digital wold by developing ambitious applications that will allow new ways to consume informations.
 <br/>
@@ -50,9 +51,10 @@ Originally I worked for the holding company of the IGG, the KPV. As we mostly de
 </div>
 
 <div class="post post--job">
-<time>Mid 2017 - Early 2018</time>
-<strong>Senior Software Engineer @ KPV Lab</strong>
-<br/>
+<div class="post-job-title">
+  <time>Mid 2017 - Early 2018</time>
+  <strong>Senior Software Engineer @ KPV Lab</strong>
+</div>
 KPV Lab is a tech holding partnership founded 2015 in Berlin. It seeded multiple start-ups which are operating in stealth mode - as is the parent entity. Focus is on next-gen software, advanced user-interfaces, realtime interactive visual tools, creating entirely novel solutions, each unprecedented in their field.
 <br/>
 <br/>
@@ -73,9 +75,10 @@ As we mostly developed tools for the Infographics Group, we decided it would mak
 </div>
 
 <div class="post post--job">
-<time>2015 - Mid 2017</time>
-<strong>Senior Frontend Engineer @ LIQID Investments GmbH</strong>
-<br/>
+<div class="post-job-title">
+  <time>2015 - Mid 2017</time>
+  <strong>Senior Frontend Engineer @ LIQID Investments GmbH</strong>
+</div>
 I started working at <a class="link" rel="nofollow" targt="_blank" href="https://liqid.de">LIQID</a> as the first employee and was part of the journey from the first line of code to having 100 million assets under managament.
 <ul>
 <li>
@@ -95,9 +98,10 @@ Created a newsletter tool used by marketing. We devolped an internal tool as oth
 </div>
 
 <div class="post post--job">
-<time>2013 - Sep 2014</time>
-<strong>Working Student @ LIQID Investments GmbH</strong>
-<br/>
+<div class="post-job-title">
+  <time>2013 - Sep 2014</time>
+  <strong>Working Student @ LIQID Investments GmbH</strong>
+</div>
 The startup 42reports gave brick and mortar stores realtime analytics using wlan fingerprinting. 42reports provided devices that were easy to setup, a realtime dashboard and the ability to track complete shopping malls using a mesh of routers.
 42reports was aquired by <a class="link" rel="nofollow" targt="_blank" href="https://www.dilax.com/">Dilax</a>.
 <br/>
@@ -114,9 +118,10 @@ I started as the first hire and worked on the whole stack in the beginning. Afte
 ## <a name="education">Education</a>
 
 <div class="post post--job">
-<time>2011 - 2015</time>
-<strong>Bachelor of Science in Computer Science</strong>
-<br/>
+<div class="post-job-title">
+  <time>2011 - 2015</time>
+  <strong>Bachelor of Science in Computer Science</strong>
+</div>
 Finished my bachelors with a grade of 1.8. I got a 1.0 on my bachelor thesis. You can find more information of it under <a class="link" href="/projects">Projects</a>.
 <br/>
 In university my focus revolved mostly around Machine Learning, AI,Robotics and Application Development.
@@ -124,8 +129,8 @@ In university my focus revolved mostly around Machine Learning, AI,Robotics and 
 </div>
 
 <div class="post post--job">
-<time>1998 - 2011</time>
-<strong>First & Secondary School</strong>
-<br/>
-
+  <div>
+    <time>1998 - 2011</time>
+    <strong>First & Secondary School</strong>
+  </div>
 </div>
