@@ -5,7 +5,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import ScatterWrapper from './ScatterWrapper';
 import config from './config';
 
-class ScatterReact extends React.Component<{}, {
+class ScatterReact extends React.PureComponent<{}, {
   data: Movie[];
   width: number;
   height: number;

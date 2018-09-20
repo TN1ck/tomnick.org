@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "The best way to build animated charts with React"
-date:   2018-07-21 19:21:33 +0100
+title:  "Comparing D3, React and React & Mobx for building charts"
+date:   2018-09-21 19:21:33 +0100
 categories: blog
 component: src/custom-pages/DataVizWithReact
 author: Tom Nick

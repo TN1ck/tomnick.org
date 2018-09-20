@@ -120,6 +120,7 @@ class MovieState {
   @observable.shallow layoutedMovies: MovieLayouted[] = [];
   @observable width: number = 1;
   @observable height: number = 1;
+  @observable useJavascript: boolean = true;
 
   lastUpdate: number;
   currentInterpolation: MovieInterpolated[];
@@ -131,6 +132,7 @@ class MovieState {
     this.setActive = this.setActive.bind(this);
     this.setData = this.setData.bind(this);
     this.setNumberOfPoints = this.setNumberOfPoints.bind(this);
+    this.setUseJavascript = this.setUseJavascript.bind(this);
 
     observe(this, 'movies', (change) => {
       const oldValue: Movie[] = change.oldValue;
@@ -162,14 +164,35 @@ class MovieState {
       this.lastUpdate = now;
       this.currentInterpolation = interpolation;
 
-      // first we apply the start state
-      this.layoutedMovies = interpolation.map(m => m(0));
-      // then we apply the end state
-      setTimeout(() => {
-        this.layoutedMovies = interpolation.map(m => m(1));
-      });
+      // with this method we can easily use javascript to update the properties...
+      if (this.useJavascript) {
+        const updater = () => {
+          const now = +(new Date());
+          const diffToLastUpdate = now - (this.lastUpdate || now);
+          const t = Math.min(diffToLastUpdate / config.transitionTime, 1);
+          this.layoutedMovies = this.currentInterpolation.map(m => m(easeInOutQuad(t)));
+          if (t < 1) {
+            requestAnimationFrame(updater);
+          }
+        }
+        updater();
+      // ... or css to update them
+      } else {
+        // first we apply the start state
+        this.layoutedMovies = interpolation.map(m => m(0));
+        // then we apply the end state
+        setTimeout(() => {
+          this.layoutedMovies = interpolation.map(m => m(1));
+        });
+      }
+
 
     });
+  }
+
+  @action
+  setUseJavascript(useJavascript) {
+    this.useJavascript = useJavascript;
   }
 
   @action
@@ -223,6 +246,14 @@ class ScatterReactMobx extends React.Component<{
         <ScatterWrapper
           updateData={movieStore.setData}
         />
+        <label>
+          {"Use Javascript for the animations "}
+          <input
+            type="checkbox"
+            checked={movieStore.useJavascript}
+            onChange={() => movieStore.setUseJavascript(!movieStore.useJavascript)}
+          />
+        </label>
         <svg
           ref={this.setRef}
           className="scatter-chart"
@@ -235,14 +266,12 @@ class ScatterReactMobx extends React.Component<{
                 cy={0}
                 r={config.radius}
                 style={{
-                  transitionDuration: config.transitionTime + 'ms',
+                  transitionDuration: (movieStore.useJavascript ? 0 : config.transitionTime) + 'ms',
                   transitionTimingFunction: 'ease-in-out',
                   transitionProperty: 'transform, opacity',
                   transform: `translate3d(${d.x}px, ${d.y}px, 0)`,
                   opacity: d.opacity,
                 }}
-                onMouseEnter={() => movieStore.setActive(d.movie)}
-                onMouseLeave={() => movieStore.setActive(null)}
               />
             );
           })}

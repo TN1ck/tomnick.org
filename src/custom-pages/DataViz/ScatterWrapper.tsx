@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Movie, DATA} from './data';
 
-class ScatterWrapper extends React.Component<{
+class ScatterWrapper extends React.PureComponent<{
   updateData: (movies: Movie[]) => any;
 }, {
   data: Movie[];

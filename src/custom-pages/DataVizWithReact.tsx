@@ -10,13 +10,15 @@ import ScatterReactMobx from './DataViz/Scatter-React-Mobx';
 import scatterd3code from '!raw-loader!./DataViz/Scatter-d3.tsx';
 // @ts-ignore
 import scatterReactcode from '!raw-loader!./DataViz/Scatter-React.tsx';
+// @ts-ignore
+import scatterReactMobxCode from '!raw-loader!./DataViz/Scatter-React-Mobx.tsx';
 
 const post: Post = {
   body: '',
   id: 'data-viz-with-react',
   attributes: {
-    title: 'How to build blazing fast Reat charts',
-    date: '2018-07-22',
+    title: 'Comparing D3, React and React + Mobx for building charts',
+    date: '2018-09-22',
     author: 'Tom Nick',
     categories: [],
     excerpt: `
@@ -37,6 +39,11 @@ class DataVizWithReact extends React.Component {
       >
         <Markdown>
           {`
+**This post is not yet published and still wip! You can read it, but a lot of things are missing.**
+          `}
+        </Markdown>
+        <Markdown>
+          {`
 Everyone who build (or tried to build) a chart with React knows its biggest pain point: How to gracefully handle new elements and elements that will be removed. By using [TransitionGroup](https://reactcommunity.org/react-transition-group/transition-group) and [CSSTransition](https://reactcommunity.org/react-transition-group/css-transition) one can try to emulate something that might come close, but it's not possible with them to completely simulate the enter/update/exit cycle of d3.
           `}
         </Markdown>
@@ -44,7 +51,7 @@ Everyone who build (or tried to build) a chart with React knows its biggest pain
         {`
 # Building a scatter plot for comparing imbd and rotten tomatoe ratings
 
-We'll build a scatter plot as shown below, first in d3, then in React, then in React + mobx.
+We'll build a simple scatter plot, first in d3, then in React, then in React + mobx.
 The scatter plot compares the ratings of imdb and rotten tomatoes by using the imdb ratings on the x axis, and the rotten tomatoes on the y axis. The underlying data looks like
 
 \`\`\`javascript
@@ -56,7 +63,7 @@ const someMovie = {
 };
 \`\`\`
 
-You can download the data [here](https://tomnick.org/TODO). I actually created the dataset, because I wasn't satisfied with the ones I found online.
+**The current data is fake**, maybe I'll update the data to look more real, but it makes reading the code a bit simpler.
         `}
         </Markdown>
         <Markdown>
@@ -125,9 +132,24 @@ Because I have some experience with this approach, some things are not that obvi
       <Markdown>
         {`
 # React with Mobx
+
+We now build it with Mobx and React. For this we need a lot of more work, as we won't rely on CSS transitions or
+D3s \`transition\` function which does all the heavy lifting for us.
         `}
       </Markdown>
       <ScatterReactMobx />
+      <Markdown>
+        {`
+Oh wow, that's a lot more code 276 lines vs 108 lines. Why's there so much more code?
+That's due to the fact, that we do the complete interpolation ourselves, it's like rebuilding
+d3s \`transition\`. We have to modes of operating: using javascript for the actual transition or
+use CSS for the transition.
+
+\`\`\`javascript
+${scatterReactMobxCode}
+\`\`\`
+        `}
+      </Markdown>
       </PostComponent>
     );
   }

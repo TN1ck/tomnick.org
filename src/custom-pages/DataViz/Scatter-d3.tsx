@@ -69,7 +69,7 @@ function scatterD3(root: SVGElement): (data: Movie[]) => any  {
 
 }
 
-class ScatterD3 extends React.Component<{}, {
+class ScatterD3 extends React.PureComponent<{}, {
   data: Movie[];
   numberOfPoints: number;
 }> {

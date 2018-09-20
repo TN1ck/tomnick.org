@@ -704,6 +704,7 @@ $shadow-padding-vertical: 3px;
 
  .scatter-chart-container {
   padding: 20px;
+  position: relative;
   background-color: #FFE53B;
   background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 74%);
   color: white;
