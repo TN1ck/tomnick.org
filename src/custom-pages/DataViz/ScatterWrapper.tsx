@@ -10,7 +10,6 @@ class ScatterWrapper extends React.PureComponent<{
 }> {
 
   start: number = 0;
-  lastUpdate: number = performance.now();
   numberOfFrames: number = 0;
   update: any;
 
@@ -41,7 +40,6 @@ class ScatterWrapper extends React.PureComponent<{
 
     const update = () => {
       const now = performance.now();
-      this.lastUpdate = now;
 
       this.numberOfFrames += 1;
 
