@@ -231,6 +231,9 @@ class ScatterReactMobx extends React.Component<{
     this.setRef = this.setRef.bind(this);
   }
   setRef(dom: SVGElement) {
+    if (!dom) {
+      return
+    }
     const height = dom.clientHeight;
     const width = dom.clientWidth;
     this.props.movieStore.setWidthHeight(width, height);

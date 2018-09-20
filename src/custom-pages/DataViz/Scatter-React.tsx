@@ -22,6 +22,9 @@ class ScatterReact extends React.PureComponent<{}, {
   }
 
   setRef(dom: SVGElement) {
+    if (!dom) {
+      return;
+    }
     const height = dom.clientHeight;
     const width = dom.clientWidth;
     this.setState({

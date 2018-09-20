@@ -8,8 +8,10 @@ import config from './config';
 
 
 function scatterD3(root: SVGElement): (data: Movie[]) => any  {
+  if (!root) {
+    return;
+  }
   const svg = d3Selection.select(root);
-
   const height = root.clientHeight;
   const width = root.clientWidth;
 
