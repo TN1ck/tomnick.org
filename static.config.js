@@ -3,15 +3,32 @@ import path from "path";
 import fs from "fs";
 import fm from "front-matter";
 import slugify from "slugify";
+import { reloadRoutes } from 'react-static/node';
 import ExtractTextPlugin from "extract-text-webpack-plugin";
+import chokidar from 'chokidar';
 import converter from './src/util/converter';
 
 // Paths Aliases defined through tsconfig.json
 const typescriptWebpackPaths = require("./webpack.config.js");
 
+chokidar.watch('./content/posts').on('all', () => reloadRoutes());
+chokidar.watch('./content/projects').on('all', () => reloadRoutes());
+chokidar.watch('./content').on('all', () => reloadRoutes());
+
+
+// Maybe create an abstract function for this
 function getPrivacyHtml () {
   return new Promise((resolve) => {
     fs.readFile(path.join(__dirname, "content/privacy.md"), "utf8", (err, text) => {
+      const html = converter.makeHtml(text);
+      resolve(html);
+    });
+  });
+}
+
+function getCvHtml () {
+  return new Promise((resolve) => {
+    fs.readFile(path.join(__dirname, "content/cv.md"), "utf8", (err, text) => {
       const html = converter.makeHtml(text);
       resolve(html);
     });
@@ -82,6 +99,7 @@ export default {
     });
 
     const privacyHtml = await getPrivacyHtml();
+    const cvHtml = await getCvHtml();
 
     const blogChildren = sortedPosts.map((post) => ({
       path: `/${post.id}`,
@@ -95,6 +113,13 @@ export default {
       {
         path: "/",
         component: "src/containers/Home",
+      },
+      {
+        path: "/cv",
+        component: "src/containers/CV",
+        getData: () => ({
+          cvHtml
+        }),
       },
       {
         path: "/projects",
