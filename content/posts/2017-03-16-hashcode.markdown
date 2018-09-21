@@ -9,7 +9,7 @@ excerpt: Hashcode is an international programming competition where teams with a
 
 A friend of mine wrote me if I know this google Competition that would take place in some weeks and send me a link with it: [https://hashcode.withgoogle.com/](https://hashcode.withgoogle.com/).
 I didn't, but was intrigued by it.
-Hashcode works by giving each team over the world at the same time access to a problem. Along with the problem are multitple input datasets.
+Hashcode works by giving each team over the world at the same time access to a problem. Along with the problem are multiple input datasets.
 The task is to do find a solution for the given data and write the solution to an output file, which then can be uploaded to be scored.
 The better the solution, the higher the score. The 50 best teams are invited to Paris and a second round will take place.
 

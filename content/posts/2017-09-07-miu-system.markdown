@@ -41,4 +41,4 @@ When you don't believe this proof, simply try it out and check if you're able to
 
 ### But why give the reader an exercise that is not solvable?
 
-Because on encounters a lot of loops in the system. Everytime you think "I might try this" you'll get to a previous point and you notice that the whole system loops itself. You figure out, that you can't escape and it doesn't matter how often or long you try, you'll always go back to where you started.
+Because on encounters a lot of loops in the system. Every time you think "I might try this" you'll get to a previous point and you notice that the whole system loops itself. You figure out, that you can't escape and it doesn't matter how often or long you try, you'll always go back to where you started.

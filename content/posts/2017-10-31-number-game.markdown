@@ -18,7 +18,7 @@ Afterwards you write the numbers from 11 to 19 below, but so, that you have 9 co
 5 1 6 1 7 1 8 1 9
 ```
 
-You are allowed to strike through numbers that are next to each other that are the same or add up to 10, no diagonals though, but the left/right neighbour of the outermost numbers are the right/left outermost of the column before/after. So the the 9 in the first row could be striked with the left 1 in the second row.
+You are allowed to strike through numbers that are next to each other that are the same or add up to 10, no diagonals though, but the left/right neighbor of the outermost numbers are the right/left outermost of the column before/after. So the the 9 in the first row could be striked with the left 1 in the second row.
 After there are now possibilities left, one must write all remaining numbers below. This repeats after no numbers are left. To get a feeling got to the implementation and play around a bit, I mark the possible matches: [http://tn1ck.github.io/numbers-game/](http://tn1ck.github.io/numbers-game/).
 
 Three years ago I wanted to learn React.js. The best way to learn a new library or framework is to build something with it, for me this was the Numbers Game. Just head straight to [http://tn1ck.github.io/numbers-game/](http://tn1ck.github.io/numbers-game/), to play it.

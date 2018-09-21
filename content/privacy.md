@@ -18,7 +18,7 @@ We use cookies on our website which amongst other things, helps us to improve yo
 
 Cookies used by us do not contain any information that personally identifies a user. They can improve your experience of using a website, for example, by remembering your preference settings and tracking your use of a website so that it can be improved to meet your needs.
 
-You can prevent cookies from being saved on your end device by setting your browser to not accept cookies. In the following we explain what cookies and associated third party technologies we use on our website, why we use them and how you can opt out if you don’t want your anonymised user behavior to be analysed for statistical or advertising purposes:
+You can prevent cookies from being saved on your end device by setting your browser to not accept cookies. In the following we explain what cookies and associated third party technologies we use on our website, why we use them and how you can opt out if you don’t want your anonymized user behavior to be analyzed for statistical or advertising purposes:
 
 ## 1. Web analytics cookies
 Web analytics cookies collect aggregated data that helps us understand how you use our website and how we can improve your experience of our website. For this purpose, the following tools create reports and statistics of the use of our website and further browsing habits:
