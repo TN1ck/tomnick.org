@@ -2,6 +2,8 @@
 
 I'm a developer by heart and love to create products. I spend a lot of time apart from my job to work on personal projects, many of which are already launched. I believe in self-improvement and always try to get better at my skills and learn new ones.
 
+My nationality and mother tongue is german. I speak english in full professional proficiency. I'm born in Berlin on the 27th of June, 1992.
+
 * <a class="link" href="#tech">Technologies</a>
 * <a class="link" href="#work">Work</a>
 * <a class="link" href="#education">Education</a>
@@ -88,12 +90,12 @@ As we mostly developed tools for the Infographics Group, we decided it would mak
 I started working at <a class="link" rel="nofollow" targt="_blank" href="https://liqid.de">LIQID</a> as the first employee and was part of the journey from the first line of code to having 100 million assets under management.
 <ul>
 <li>
-Build the complete Frontend Application which includes deciding on the technologies used, working closely with the stakeholder and of course major feature implementation. Technologies used are React, Redux, Immutable.js, D3 and Webpack.
+Build the complete Frontend Application which includes deciding on the technologies used, working closely with the stakeholders and of course major feature implementation. Technologies used are React, Redux, Immutable.js, D3 and Webpack.
 </li>
 <li>
 Co-created the sophisticated testing infrastructure. As every customer was worth a lot and the traffic was not that high we needed to make sure to not have a single bug. The testing stack included unit tests, E2E tests, constant error-observation, continues integration and E2E test observation. To make the E2E deterministic, we used docker containers to spin up the whole backend/frontend and test against a completely new backend. Used technologies were Jest, Nightwatch.js, Docker, Sentry and Codeship.
 </li>
-<li>Build a PDF reporting tool as a microservice, which was used to generate all monthly/quarterly reports for the customers. Complex charts and long tables were part of the reports. We used React & wkhtmltopdf (now Puppeteer) as the main technologies. The reports were small in file size, despite including a lot of graphics.</li>
+<li>Build a PDF reporting tool as a microservice, which was used to generate all monthly/quarterly reports for the customers. Complex charts and long tables were part of the reports. We used React & wkhtmltopdf (later switched to Puppeteer) as the main technologies. The reports were small in file size, despite including a lot of graphics.</li>
 <li>
 Created some open source libraries that are still in use in the application: <a class="link" rel="nofollow" targt="_blank" href="https://github.com/LIQIDTechnology/redux-fetchers">redux-fetchers</a> and <a class="link" href="https://github.com/LIQIDTechnology/german-tax-id-validator" rel="nofollow" targt="_blank">german-tax-id-validator</a>
 </li>
