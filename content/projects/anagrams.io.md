@@ -1,6 +1,6 @@
 ---
 title:  anagrams.io
-year:   2017
+year:   2018
 author: Tom Nick
 video: /videos/anagrams.io.mp4
 preview: /videos/anagrams.io.png

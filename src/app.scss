@@ -128,6 +128,10 @@ nav {
         opacity: 1;
       }
     }
+
+    @media (max-width: 500px) {
+      margin-right: $spacing-unit / 1.5;
+    }
   }
 }
 
@@ -510,6 +514,26 @@ $shadow-padding-vertical: 3px;
         padding-left: $spacing-unit;
         padding-right: $spacing-unit;
     }
+}
+
+//
+// PRINT STYLES
+//
+
+@media print {
+  .post {
+    background: none;
+    box-shadow: none;
+  }
+  nav {
+    display: none;
+  }
+  footer {
+    display: none;
+  }
+  .post-excerpt-inner, .post-author {
+    box-shadow: none;
+  }
 }
 
 // .color-frame {
