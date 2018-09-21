@@ -534,6 +534,10 @@ $shadow-padding-vertical: 3px;
   .post-excerpt-inner, .post-author {
     box-shadow: none;
   }
+  .page-break	{
+    display: block;
+    page-break-before: always;
+  }
 }
 
 // .color-frame {

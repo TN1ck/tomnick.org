@@ -26,7 +26,7 @@ I'm a developer by heart and love to create products. I spend a lot of time apar
   </dl>
 </div>
 
-## <a name="work">Work</a>
+## <a class="page-break" name="work">Work</a>
 <div class="post post--job">
 <div class="post-job-title">
   <time>Early 2018 - Now</time>
