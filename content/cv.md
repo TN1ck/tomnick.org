@@ -4,12 +4,13 @@ I'm a developer by heart and love to create products. I spend a lot of time apar
 
 My nationality and mother tongue is german. I speak english in full professional proficiency. I'm born in Berlin on the 27th of June, 1992.
 
-* <a class="link" href="#tech">Technologies</a>
-* <a class="link" href="#work">Work</a>
-* <a class="link" href="#education">Education</a>
-* <a class="link" href="/projects">Personal Projects</a>
+- <a class="link" href="#tech">Technologies</a>
+- <a class="link" href="#work">Work</a>
+- <a class="link" href="#education">Education</a>
+- <a class="link" href="/projects">Personal Projects</a>
 
 ## <a name="tech">Technologies I use and like</a>
+
 <div class="post post--job">
   I try to use the most fitting technologies for a problem, but I also have clear favorites. This list includes things I feel comfortable in, but I'm always open for new ones and try to be up to date with the current advancements.
   <dl>
@@ -29,6 +30,7 @@ My nationality and mother tongue is german. I speak english in full professional
 </div>
 
 ## <a class="page-break" name="work">Work</a>
+
 <div class="post post--job">
 <div class="post-job-title">
   <time>Early 2018 - Now</time>
@@ -108,7 +110,7 @@ Created a newsletter tool used by marketing. We developed an internal tool, as o
 <div class="post post--job">
 <div class="post-job-title">
   <time>2013 - 2014</time>
-  <strong>Working Student @ LIQID Investments GmbH</strong>
+  <strong>Working Student @ 42reports</strong>
 </div>
 The startup 42reports gave brick and mortar stores realtime analytics using wlan fingerprinting. 42reports provided devices that were easy to setup, a realtime dashboard and the ability to track complete shopping malls using a mesh of routers.
 42reports was acquired by <a class="link" rel="nofollow" targt="_blank" href="https://www.dilax.com/">Dilax</a>.
