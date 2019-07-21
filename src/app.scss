@@ -4,6 +4,33 @@
 // ---
 @charset "utf-8";
 
+@font-face {
+  font-family: 'Roboto';
+  src: url('../public/roboto/subset-Roboto-Italic.woff2') format('woff2'),
+    url('../public/roboto/subset-Roboto-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../public/roboto/subset-Roboto-Medium.woff2') format('woff2'),
+    url('../public/roboto/subset-Roboto-Medium.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../public/roboto/subset-Roboto-Regular.woff2') format('woff2'),
+    url('../public/roboto/subset-Roboto-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: fallback;
+}
+
 // Our variables
 $base-font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $base-font-size: 16px;
