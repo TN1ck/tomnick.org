@@ -1,20 +1,22 @@
-import React from "react";
-import { withRouteData, Link } from "react-static";
-import { Project } from "../types";
+import React from 'react'
+import { withRouteData } from 'react-static'
+import { Project } from '../types'
 
 interface Props {
-  projects: Project[];
+  projects: Project[]
 }
 
 export default withRouteData(({ projects }: Props) => (
   <div>
     <h1>Personal projects</h1>
-    {projects.map((project, i) =>  {
-      const projectBefore = projects[i - 1];
-      const showYear = !projectBefore || projectBefore.attributes.year !== project.attributes.year;
+    {projects.map((project, i) => {
+      const projectBefore = projects[i - 1]
+      // const showYear =
+      //   !projectBefore ||
+      //   projectBefore.attributes.year !== project.attributes.year
       return (
         <div key={i}>
-          {showYear ? <h2>{project.attributes.year}</h2> : null}
+          {/* {showYear ? <h2>{project.attributes.year}</h2> : null} */}
           <div className="post">
             <video loop muted poster={project.attributes.preview} controls>
               <source type="video/mp4" src={project.attributes.video} />
@@ -27,7 +29,7 @@ export default withRouteData(({ projects }: Props) => (
             />
           </div>
         </div>
-      );
+      )
     })}
   </div>
-));
+))
