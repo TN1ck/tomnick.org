@@ -49,7 +49,7 @@
     "node-sass": "^4.9.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.0.1",
-    "serve": "^6.5.3",
+    "serve": "^10.1.2",
     "showdown": "^1.8.6",
     "slugify": "^1.2.9",
     "ts-loader": "^3.5.0",
